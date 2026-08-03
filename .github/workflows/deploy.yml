@@ -5,7 +5,7 @@ name: Déploiement GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "claude/cycling-news-website-1rej40"]
   workflow_dispatch:
 
 permissions:

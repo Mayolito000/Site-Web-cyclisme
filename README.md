@@ -69,18 +69,33 @@ L'e-mail de contact est repris automatiquement partout depuis `SITE.email`.
 
 ## 🌍 Mettre le site en ligne (GitHub Pages)
 
-Le dépôt contient déjà un workflow de déploiement (`.github/workflows/deploy.yml`).
+> ⚠️ **Étape indispensable d'abord : rendre le dépôt public.**
+> GitHub Pages n'est gratuit sur un dépôt **privé** qu'avec un abonnement payant.
+> Va dans **Settings → General → Danger Zone → Change repository visibility → Public**.
+> (Sinon, le site ne sera pas accessible « à tout le monde ».)
 
-1. Fusionne cette branche dans `main` (ou pousse le contenu sur `main`).
-2. Sur GitHub : **Settings → Pages**.
-3. Dans **Build and deployment → Source**, choisis **GitHub Actions**.
-4. Le site se publie automatiquement à chaque push sur `main`.
+Ensuite, deux façons de publier — choisis la plus simple pour toi.
 
-L'adresse sera de la forme :
+### Option A — La plus simple (déployer depuis la branche)
+
+1. **Settings → Pages**.
+2. **Build and deployment → Source** : choisis **Deploy from a branch**.
+3. Branche : la branche qui contient le code, dossier **`/ (root)`**. Enregistre.
+4. Patiente une minute : le site s'affiche à l'adresse indiquée en haut de la page Pages.
+
+### Option B — Via GitHub Actions (workflow inclus)
+
+Le dépôt contient déjà `.github/workflows/deploy.yml`.
+
+1. **Settings → Pages → Source** : choisis **GitHub Actions**.
+2. Le site se redéploie automatiquement à chaque push (le workflow se déclenche
+   sur `main` et sur la branche de développement actuelle).
+
+Dans les deux cas, l'adresse ressemble à :
 `https://<ton-utilisateur>.github.io/<nom-du-depot>/`
 
-> Astuce : pour une URL plus courte, tu peux ajouter un domaine personnalisé
-> dans Settings → Pages (champ *Custom domain*).
+> Astuce : pour une URL plus courte, ajoute un domaine personnalisé dans
+> Settings → Pages (champ *Custom domain*).
 
 ---
 
