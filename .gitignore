@@ -1,0 +1,11 @@
+# Dépendances (le site n'en a aucune — présentes uniquement lors de tests locaux)
+node_modules/
+package.json
+package-lock.json
+
+# Système / éditeurs
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

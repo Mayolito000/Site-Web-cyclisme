@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Mayeul, journaliste cycliste</title>
+  <meta name="description" content="Le portfolio de Mayeul, journaliste cycliste : articles sélectionnés, rubriques de prédilection et contact pour collaborations." />
+  <meta name="theme-color" content="#e23a26" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e23a26'/%3E%3Cg fill='none' stroke='white' stroke-width='7'%3E%3Ccircle cx='32' cy='64' r='18'/%3E%3Ccircle cx='72' cy='64' r='18'/%3E%3Cpath d='M32 64 L52 40 L72 64 M52 40 L44 40 M52 40 L58 64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E" />
+</head>
+<body data-page="portfolio">
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <header class="site-header">
+    <nav class="wrap nav" aria-label="Navigation principale">
+      <a class="brand" href="index.html" aria-label="La Flamme Rouge, accueil">
+        <span class="brand__mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8">
+            <circle cx="30" cy="66" r="16"/><circle cx="72" cy="66" r="16"/>
+            <path d="M30 66 L52 40 L72 66 M52 40 L44 40 M52 40 L60 66" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand__text">La Flamme Rouge<small>Actualité cycliste</small></span>
+      </a>
+      <button class="nav__toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+      <div class="nav__links" id="menu">
+        <a data-nav="home" href="index.html">Accueil</a>
+        <a data-nav="news" href="actualites.html">Actualités</a>
+        <a data-nav="portfolio" href="portfolio.html">Portfolio</a>
+        <a class="btn btn--primary nav__cta" href="#contact">Me contacter</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="section wrap">
+      <div class="profile">
+        <!-- Carte profil -->
+        <aside class="profile__card reveal">
+          <div class="profile__avatar" aria-hidden="true">M</div>
+          <h1>Mayeul</h1>
+          <p class="profile__role">Journaliste cycliste</p>
+          <p style="color:var(--muted);font-size:.92rem;margin-top:.7rem">Passionné de vélo et d'écriture, je décrypte l'actualité du peloton et raconte ce qui se joue derrière les courses.</p>
+          <ul class="contact">
+            <li><a data-mailto href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <span data-site-email>e-mail</span>
+            </a></li>
+            <li><a href="actualites.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+              Mes articles
+            </a></li>
+            <li><a href="index.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+              La Flamme Rouge
+            </a></li>
+          </ul>
+        </aside>
+
+        <!-- Bio / à propos -->
+        <div>
+          <span class="eyebrow">À propos</span>
+          <p class="lede">Je m'appelle Mayeul, et j'écris sur le cyclisme parce qu'aucune autre discipline ne raconte aussi bien l'effort, la stratégie et le collectif.</p>
+          <div class="about-body">
+            <p>Ce site rassemble mon travail : des articles de fond, des décryptages tactiques, des billets sur le matériel et la culture vélo. Mon approche est simple — expliquer ce que le grand public ne voit pas, sans jargon inutile, avec le souci du détail juste.</p>
+            <p>Que ce soit une échappée qui déjoue les pronostics, une innovation matériel qui change la donne ou le portrait d'une génération montante, je cherche toujours l'angle qui donne à comprendre. Ce portfolio en rassemble quelques exemples.</p>
+          </div>
+
+          <h2 style="font-family:var(--serif);font-weight:560;font-size:1.5rem;letter-spacing:-.01em;margin-top:2.2rem">Mes rubriques de prédilection</h2>
+          <ul class="expertise">
+            <li><b>Tactique</b><span>Décrypter les courses, comprendre les choix du peloton.</span></li>
+            <li><b>Matériel</b><span>Innovations, tendances et retours d'expérience.</span></li>
+            <li><b>Portraits</b><span>Les coureuses et coureurs qui font le cyclisme.</span></li>
+            <li><b>Culture</b><span>L'histoire, les symboles et l'âme du vélo.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Travaux sélectionnés -->
+    <section class="section wrap" style="padding-top:0">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Sélection</span>
+          <h2>Articles à retenir</h2>
+        </div>
+        <a class="link-more" href="actualites.html">Tous mes articles →</a>
+      </div>
+      <div class="grid" id="js-portfolio-grid"></div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section wrap" id="contact">
+      <div class="contact-cta reveal">
+        <span class="eyebrow" style="color:var(--gold)">Travaillons ensemble</span>
+        <h2>Envie de collaborer&nbsp;?</h2>
+        <p>Piges, collaborations éditoriales, relecture ou simple échange autour du vélo : ma boîte mail est ouverte.</p>
+        <a class="btn btn--light" data-mailto href="#">Écrivez-moi</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="index.html" aria-label="La Flamme Rouge">
+          <span class="brand__mark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8">
+              <circle cx="30" cy="66" r="16"/><circle cx="72" cy="66" r="16"/>
+              <path d="M30 66 L52 40 L72 66 M52 40 L44 40 M52 40 L60 66" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="brand__text">La Flamme Rouge<small>Actualité cycliste</small></span>
+        </a>
+        <p>Le blog et le portfolio de Mayeul, journaliste cycliste. L'actualité du peloton, décryptée sans langue de bois.</p>
+      </div>
+      <nav aria-label="Explorer">
+        <h5>Explorer</h5>
+        <a href="index.html">Accueil</a>
+        <a href="actualites.html">Actualités</a>
+        <a href="portfolio.html">Portfolio</a>
+      </nav>
+      <div>
+        <h5>Contact</h5>
+        <a data-site-email href="#">e-mail</a>
+        <a href="#contact">Collaborations</a>
+      </div>
+    </div>
+    <div class="wrap footer__bottom">
+      <span>© <span data-year></span> <span data-site-name>La Flamme Rouge</span>. Tous droits réservés.</span>
+      <span>Conçu &amp; écrit par Mayeul.</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/articles.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

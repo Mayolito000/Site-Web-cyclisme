@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Flamme Rouge — L'actualité cycliste, décryptée</title>
+  <meta name="description" content="La Flamme Rouge : actualité, tactique, matériel et culture cycliste. Le portfolio et le blog de Mayeul, journaliste cycliste." />
+  <meta name="author" content="Mayeul" />
+  <meta name="theme-color" content="#e23a26" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="La Flamme Rouge — L'actualité cycliste, décryptée" />
+  <meta property="og:description" content="Actualité, tactique, matériel et culture cycliste. Le blog et portfolio de Mayeul." />
+  <meta property="og:locale" content="fr_FR" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e23a26'/%3E%3Cg fill='none' stroke='white' stroke-width='7'%3E%3Ccircle cx='32' cy='64' r='18'/%3E%3Ccircle cx='72' cy='64' r='18'/%3E%3Cpath d='M32 64 L52 40 L72 64 M52 40 L44 40 M52 40 L58 64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E" />
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <header class="site-header">
+    <nav class="wrap nav" aria-label="Navigation principale">
+      <a class="brand" href="index.html" aria-label="La Flamme Rouge, accueil">
+        <span class="brand__mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8">
+            <circle cx="30" cy="66" r="16"/><circle cx="72" cy="66" r="16"/>
+            <path d="M30 66 L52 40 L72 66 M52 40 L44 40 M52 40 L60 66" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand__text">La Flamme Rouge<small>Actualité cycliste</small></span>
+      </a>
+      <button class="nav__toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+      <div class="nav__links" id="menu">
+        <a data-nav="home" href="index.html">Accueil</a>
+        <a data-nav="news" href="actualites.html">Actualités</a>
+        <a data-nav="portfolio" href="portfolio.html">Portfolio</a>
+        <a class="btn btn--primary nav__cta" href="portfolio.html#contact">Me contacter</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero wrap">
+      <div class="hero__grid">
+        <div class="hero__lead">
+          <span class="hero__kicker"><span class="dot"></span> Le journal du peloton</span>
+          <h1 class="hero__title">L'actualité cycliste, <em>décryptée</em>.</h1>
+          <p class="hero__sub">Analyses de course, tactique, matériel et culture vélo. Un regard de journaliste sur ce qui fait vibrer le peloton.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="actualites.html">Lire les actualités <span class="btn__arrow">→</span></a>
+            <a class="btn btn--ghost" href="portfolio.html">Découvrir mon travail</a>
+          </div>
+        </div>
+        <article class="hero__feature" id="js-featured" aria-label="Article à la une"></article>
+      </div>
+    </section>
+
+    <!-- DERNIERS ARTICLES -->
+    <section class="section wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Fraîchement publié</span>
+          <h2>Les derniers articles</h2>
+        </div>
+        <a class="link-more" href="actualites.html">Voir tout →</a>
+      </div>
+      <div class="latest">
+        <div class="grid" id="js-latest-grid"></div>
+        <div>
+          <span class="eyebrow" style="display:block;margin-bottom:.9rem">À lire aussi</span>
+          <div class="stack" id="js-latest-stack"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BANDE SOMBRE : le projet -->
+    <section class="band">
+      <div class="wrap section band__inner">
+        <div class="reveal">
+          <span class="eyebrow">Le projet</span>
+          <h2>Raconter le cyclisme autrement.</h2>
+          <p>Derrière chaque course, il y a des choix, des tactiques, des histoires. La Flamme Rouge, c'est l'endroit où je partage mes articles et mon travail de journaliste — et où je montre comment le vélo se raconte.</p>
+          <div class="mt-sm">
+            <a class="btn btn--light" href="portfolio.html">Voir le portfolio <span class="btn__arrow">→</span></a>
+          </div>
+        </div>
+        <div class="band__stats reveal">
+          <div class="stat"><b>4</b><span>Rubriques</span></div>
+          <div class="stat"><b>100%</b><span>Passion vélo</span></div>
+          <div class="stat"><b>0</b><span>Langue de bois</span></div>
+          <div class="stat"><b>∞</b><span>Kilomètres à raconter</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section wrap" id="contact">
+      <div class="contact-cta reveal">
+        <span class="eyebrow" style="color:var(--gold)">Collaborons</span>
+        <h2>Une pige, une idée, un projet ?</h2>
+        <p>Je suis ouvert aux collaborations éditoriales, aux piges et aux projets autour du cyclisme. Écrivez-moi, je réponds à chaque message.</p>
+        <a class="btn btn--light" data-mailto href="#">Me contacter par e-mail</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="index.html" aria-label="La Flamme Rouge">
+          <span class="brand__mark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8">
+              <circle cx="30" cy="66" r="16"/><circle cx="72" cy="66" r="16"/>
+              <path d="M30 66 L52 40 L72 66 M52 40 L44 40 M52 40 L60 66" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="brand__text">La Flamme Rouge<small>Actualité cycliste</small></span>
+        </a>
+        <p>Le blog et le portfolio de Mayeul, journaliste cycliste. L'actualité du peloton, décryptée sans langue de bois.</p>
+      </div>
+      <nav aria-label="Explorer">
+        <h5>Explorer</h5>
+        <a href="index.html">Accueil</a>
+        <a href="actualites.html">Actualités</a>
+        <a href="portfolio.html">Portfolio</a>
+      </nav>
+      <div>
+        <h5>Contact</h5>
+        <a data-site-email href="#">e-mail</a>
+        <a href="portfolio.html#contact">Collaborations</a>
+      </div>
+    </div>
+    <div class="wrap footer__bottom">
+      <span>© <span data-year></span> <span data-site-name>La Flamme Rouge</span>. Tous droits réservés.</span>
+      <span>Conçu &amp; écrit par Mayeul.</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/articles.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
