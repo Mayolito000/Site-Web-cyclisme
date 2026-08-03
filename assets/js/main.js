@@ -1,5 +1,5 @@
 /* =========================================================================
-   La Flamme Rouge — Logique du site
+   La Revue Cycliste — Logique du site
    Rendu des articles, vignettes générées, filtres, navigation.
    ========================================================================= */
 (function () {
@@ -82,6 +82,19 @@
     return h;
   }
 
+  /* Contenu d'une vignette : la photo (si `image` est défini) posée sur
+     l'illustration SVG. Si la photo ne charge pas, elle s'efface et
+     l'illustration reste visible — jamais d'image cassée.                 */
+  function mediaHTML(a) {
+    const svg = thumbSVG(a);
+    if (a.image) {
+      return svg +
+        `<img class="thumb-img" src="${escapeHTML(a.image)}" alt="${escapeHTML(a.title)}"` +
+        ` loading="lazy" decoding="async" onerror="this.style.display='none'">`;
+    }
+    return svg;
+  }
+
   /* ---- Fabriques de fragments ---------------------------------------- */
   function metaHTML(a) {
     return `<span class="meta">
@@ -97,7 +110,7 @@
     const href = `article.html?id=${encodeURIComponent(a.id)}`;
     return `<article class="card reveal">
       <a class="card__link" href="${href}" aria-label="${escapeHTML(a.title)}">
-        <div class="thumb">${thumbSVG(a)}</div>
+        <div class="thumb">${mediaHTML(a)}</div>
       </a>
       <div class="card__body">
         <h3 class="card__title"><a class="stretch" href="${href}">${escapeHTML(a.title)}</a></h3>
@@ -110,7 +123,7 @@
   function miniHTML(a) {
     const href = `article.html?id=${encodeURIComponent(a.id)}`;
     return `<a class="mini" href="${href}">
-      <span class="thumb">${thumbSVG(a)}</span>
+      <span class="thumb">${mediaHTML(a)}</span>
       <span>
         <h4>${escapeHTML(a.title)}</h4>
         <span class="meta"><time datetime="${a.date}">${formatDate(a.date)}</time>
@@ -128,7 +141,7 @@
     if (featBox && featured) {
       const href = `article.html?id=${encodeURIComponent(featured.id)}`;
       featBox.innerHTML = `
-        <a href="${href}" class="thumb" aria-label="${escapeHTML(featured.title)}">${thumbSVG(featured)}</a>
+        <a href="${href}" class="thumb" aria-label="${escapeHTML(featured.title)}">${mediaHTML(featured)}</a>
         <div class="feature__body">
           <span class="chip chip--gold">À la une · ${escapeHTML(featured.category)}</span>
           <h3><a href="${href}">${escapeHTML(featured.title)}</a></h3>
@@ -226,7 +239,7 @@
           </span>
         </div>
       </div>
-      <div class="wrap article-cover"><div class="thumb">${thumbSVG(a)}</div></div>
+      <div class="wrap article-cover"><div class="thumb">${mediaHTML(a)}</div></div>
       <div class="wrap"><div class="prose">${bodyHTML}</div></div>
       <div class="wrap">
         <div class="article-foot">

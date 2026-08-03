@@ -1,11 +1,11 @@
-# La Flamme Rouge — site d'actualité cycliste & portfolio
+# La Revue Cycliste — site d'actualité cycliste & portfolio
 
 Site web statique dédié à l'actualité cycliste, servant aussi de **portfolio de journaliste**.
 Aucune dépendance, aucun build : du HTML, du CSS et un peu de JavaScript. Il se déploie
 gratuitement sur **GitHub Pages**.
 
-> **Nom & identité** : le site s'appelle « La Flamme Rouge » (le fanion du dernier
-> kilomètre). Tu peux tout renommer en une minute — voir *Personnaliser* plus bas.
+> **Nom & identité** : le site s'appelle « La Revue Cycliste ».
+> Tu peux tout renommer en une minute — voir *Personnaliser* plus bas.
 
 ---
 

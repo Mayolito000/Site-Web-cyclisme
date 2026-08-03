@@ -1,5 +1,5 @@
 /* =========================================================================
-   La Flamme Rouge — Feuille de style principale
+   La Revue Cycliste — Feuille de style principale
    Design éditorial : magazine cycliste. Palette chaude, typo affirmée.
    ========================================================================= */
 
@@ -235,9 +235,15 @@ ul { list-style: none; padding: 0; }
 .meta .sep { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .55; }
 .meta time, .meta .rt { font-family: var(--mono); font-size: .74rem; letter-spacing: .02em; }
 
-/* ---- Placeholder thumbnails (generated in JS) ------------------------- */
+/* ---- Vignettes : photo si disponible, sinon illustration SVG ---------
+   La photo (.thumb-img) recouvre l'illustration SVG. Si elle échoue à se
+   charger, un onerror la masque et l'illustration réapparaît dessous.     */
 .thumb { position: relative; width: 100%; overflow: hidden; background: var(--line-soft); }
 .thumb svg { width: 100%; height: 100%; }
+.thumb .thumb-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 1; background: var(--line-soft);
+}
 
 /* ---- Article grid / cards -------------------------------------------- */
 .grid {

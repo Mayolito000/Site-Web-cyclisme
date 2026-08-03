@@ -1,5 +1,5 @@
 /* =========================================================================
-   La Flamme Rouge — Base d'articles
+   La Revue Cycliste — Base d'articles
    -------------------------------------------------------------------------
    POUR AJOUTER UN ARTICLE : copie un bloc ci-dessous, change les champs.
    Champs :
@@ -12,7 +12,12 @@
      readingTime: minutes de lecture (nombre)
      featured   : true pour la une de l'accueil (un seul de préférence)
      portfolio  : true pour l'afficher dans la page Portfolio
-     tone       : couleur de la vignette — "red" | "gold" | "ink" | "slate" | "sky"
+     tone       : couleur de la vignette illustrée — "red" | "gold" | "ink" | "slate" | "sky"
+     image      : (FACULTATIF) photo de l'article. Chemin local ou URL.
+                    - fichier local : "assets/img/mon-article.jpg"
+                    - lien direct   : "https://.../photo.jpg" (ex. Unsplash, libre de droit)
+                  Si l'image manque ou ne charge pas, l'illustration colorée
+                  s'affiche automatiquement à la place (jamais d'image cassée).
      body       : contenu, tableau de blocs :
                     { t:"p",  x:"paragraphe" }
                     { t:"h2", x:"sous-titre" }
@@ -23,7 +28,7 @@
    ========================================================================= */
 
 const SITE = {
-  name: "La Flamme Rouge",
+  name: "La Revue Cycliste",
   tagline: "L'actualité cycliste, décryptée.",
   author: "Mayeul",
   role: "Journaliste cycliste",
@@ -199,7 +204,7 @@ const ARTICLES = [
       { t: "h2", x: "Une origine militaire" },
       { t: "p", x: "L'expression trouve ses racines loin des routes de course. Le rouge, couleur de l'urgence et du signal, s'est imposé pour matérialiser l'ultime effort. Depuis, il rythme les emballages finaux de toutes les grandes épreuves." },
       { t: "quote", x: "Passé la flamme rouge, il n'y a plus de calcul. Il n'y a plus que la ligne." },
-      { t: "p", x: "Ce blog en a fait son nom, parce qu'il incarne ce que le cyclisme a de plus pur : l'instant où la stratégie s'efface devant l'engagement total." },
+      { t: "p", x: "C'est peut-être ce que le cyclisme a de plus pur : l'instant où la stratégie s'efface devant l'engagement total, où il ne reste que la volonté d'aller au bout." },
     ],
   },
 ];
