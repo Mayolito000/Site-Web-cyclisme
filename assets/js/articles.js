@@ -32,7 +32,7 @@ const SITE = {
   tagline: "L'actualité cycliste, décryptée.",
   author: "Mayeul",
   role: "Journaliste cycliste",
-  email: "mayeulstms@gmail.com",
+  email: "larevuecycliste@gmail.com",
   location: "France",
 };
 
