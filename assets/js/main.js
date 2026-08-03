@@ -320,8 +320,8 @@
 
     if (!ARTICLES.length) {
       grid.innerHTML = comingSoonHTML(
-        "Ma sélection arrive bientôt",
-        "Mes articles à retenir s'afficheront ici dès leur publication."
+        "Notre sélection arrive bientôt",
+        "Nos articles à retenir s'afficheront ici dès leur publication."
       );
       const more = $("#js-portfolio-more");
       if (more) more.style.display = "none";
