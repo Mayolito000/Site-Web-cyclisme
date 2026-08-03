@@ -132,12 +132,53 @@
     </a>`;
   }
 
+  /* ---- État « à venir » (aucun article) ------------------------------ */
+  function comingSoonHTML(title, text) {
+    return `<div class="soon">
+      <div class="soon__mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8">
+          <circle cx="30" cy="66" r="16"/><circle cx="72" cy="66" r="16"/>
+          <path d="M30 66 L52 40 L72 66 M52 40 L44 40 M52 40 L60 66" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>${escapeHTML(title)}</h3>
+      <p>${escapeHTML(text)}</p>
+    </div>`;
+  }
+
+  function featurePlaceholderHTML() {
+    const svg = thumbSVG({ id: "soon-hero", category: "À venir", tone: "slate" });
+    return `<div class="thumb">${svg}</div>
+      <div class="feature__body">
+        <span class="chip chip--gold">À venir</span>
+        <h3>La une arrive bientôt</h3>
+        <p>Le premier article mis en avant s'affichera ici.</p>
+        <div class="meta">La Revue Cycliste · Actualité cycliste</div>
+      </div>`;
+  }
+
   /* ---- Page : ACCUEIL ------------------------------------------------- */
   function renderHome() {
+    const featBox = $("#js-featured");
+    const grid = $("#js-latest-grid");
+    if (!featBox && !grid) return; // pas la page d'accueil
+
     const sorted = [...ARTICLES].sort(byDateDesc);
+
+    if (!sorted.length) {
+      if (featBox) featBox.innerHTML = featurePlaceholderHTML();
+      const latest = $("#js-latest");
+      if (latest) latest.innerHTML = comingSoonHTML(
+        "Les premiers articles arrivent bientôt",
+        "La Revue Cycliste se prépare. Reviens très vite pour lire les premières analyses et décryptages du peloton."
+      );
+      const more = $("#js-latest-more");
+      if (more) more.style.display = "none";
+      return;
+    }
+
     const featured = sorted.find((a) => a.featured) || sorted[0];
 
-    const featBox = $("#js-featured");
     if (featBox && featured) {
       const href = `article.html?id=${encodeURIComponent(featured.id)}`;
       featBox.innerHTML = `
@@ -155,7 +196,6 @@
 
     const rest = sorted.filter((a) => a.id !== (featured && featured.id));
 
-    const grid = $("#js-latest-grid");
     if (grid) grid.innerHTML = rest.slice(0, 3).map(cardHTML).join("");
 
     const stack = $("#js-latest-stack");
@@ -169,6 +209,15 @@
     if (!grid) return;
 
     const sorted = [...ARTICLES].sort(byDateDesc);
+
+    if (!sorted.length) {
+      if (filterBox) filterBox.style.display = "none";
+      grid.innerHTML = comingSoonHTML(
+        "Les premiers articles arrivent bientôt",
+        "Aucun article n'est encore publié. Reviens vite : les analyses, décryptages et récits cyclistes arrivent."
+      );
+      return;
+    }
 
     // Construire les filtres
     if (filterBox) {
@@ -268,6 +317,17 @@
   function renderPortfolio() {
     const grid = $("#js-portfolio-grid");
     if (!grid) return;
+
+    if (!ARTICLES.length) {
+      grid.innerHTML = comingSoonHTML(
+        "Ma sélection arrive bientôt",
+        "Mes articles à retenir s'afficheront ici dès leur publication."
+      );
+      const more = $("#js-portfolio-more");
+      if (more) more.style.display = "none";
+      return;
+    }
+
     const picks = ARTICLES.filter((a) => a.portfolio).sort(byDateDesc);
     grid.innerHTML = (picks.length ? picks : [...ARTICLES].sort(byDateDesc).slice(0, 4))
       .map(cardHTML).join("");

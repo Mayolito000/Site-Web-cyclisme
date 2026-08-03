@@ -49,7 +49,8 @@ Pour ajouter un article, copie un bloc existant dans le tableau `ARTICLES` et ad
 ```
 
 C'est tout : l'article apparaît automatiquement sur l'accueil, dans les actualités,
-et dans les articles liés. Le contenu livré est un **exemple** à remplacer par tes vrais articles.
+et dans les articles liés. **Le site démarre sans article** : tant que le tableau
+`ARTICLES` est vide, un état « à venir » soigné s'affiche à la place.
 
 ---
 

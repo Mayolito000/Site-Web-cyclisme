@@ -378,6 +378,27 @@ ul { list-style: none; padding: 0; }
 .center { text-align: center; }
 .mt-sm { margin-top: 1rem; }
 .empty-state { text-align: center; color: var(--muted); padding: 3rem 1rem; font-family: var(--serif); font-size: 1.2rem; }
+
+/* ---- État « à venir » (aucun article) -------------------------------- */
+.soon {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: clamp(2.4rem, 6vw, 4rem) 1.5rem;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+}
+.soon__mark {
+  width: 58px; height: 58px; margin: 0 auto 1.1rem; border-radius: 16px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  display: grid; place-items: center; color: var(--accent);
+}
+.soon h3 {
+  font-family: var(--serif); font-weight: 560; color: var(--ink);
+  font-size: clamp(1.3rem, 3.6vw, 1.9rem); letter-spacing: -.015em; line-height: 1.1;
+}
+.soon p { margin: .7rem auto 0; max-width: 44ch; font-size: 1rem; }
 :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; border-radius: 4px; }
 .skip-link { position: absolute; left: -999px; top: .5rem; background: var(--ink); color: #fff; padding: .6rem 1rem; border-radius: 8px; z-index: 100; }
 .skip-link:focus { left: .8rem; }
