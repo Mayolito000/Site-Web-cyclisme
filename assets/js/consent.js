@@ -43,7 +43,7 @@
     b.innerHTML =
       '<div class="cookie-banner__inner">' +
         '<p class="cookie-banner__txt">🍪 Nous utilisons un outil de mesure d\'audience (Microsoft Clarity) ' +
-        'pour comprendre comment le site est utilisé et l\'améliorer. Tu peux accepter ou refuser ces cookies.</p>' +
+        'pour comprendre comment le site est utilisé et l\'améliorer. Vous pouvez accepter ou refuser ces cookies.</p>' +
         '<div class="cookie-banner__actions">' +
           '<button type="button" class="cookie-btn cookie-btn--ghost" data-consent="denied">Refuser</button>' +
           '<button type="button" class="cookie-btn cookie-btn--primary" data-consent="granted">Accepter</button>' +

@@ -71,7 +71,7 @@ const CATEGORIES = [
 // -------------------------------------------------------------------------
 
 const ARTICLES = [
-  // Ajoute tes articles ici (voir le modèle ci-dessus).
+  // Ajoutez vos articles ici (voir le modèle ci-dessus).
 ];
 
 /* Exposé globalement pour les autres scripts */
