@@ -33,7 +33,7 @@ Pour ajouter un article, copie un bloc existant dans le tableau `ARTICLES` et ad
   title: "Titre de l'article",
   category: "Tactique",              // doit exister dans CATEGORIES
   excerpt: "Résumé en deux phrases.",
-  author: "Mayeul",
+  author: "La rédaction",
   date: "2026-08-03",                // format AAAA-MM-JJ
   readingTime: 6,                    // minutes
   featured: false,                   // true = mise en avant sur l'accueil
@@ -132,4 +132,4 @@ python3 -m http.server 8000
 
 ---
 
-Réalisé pour Mayeul. Bonne route ! 🚴‍♂️
+La Revue Cycliste. Bonne route ! 🚴‍♂️

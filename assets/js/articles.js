@@ -30,8 +30,8 @@
 const SITE = {
   name: "La Revue Cycliste",
   tagline: "L'actualité cycliste, décryptée.",
-  author: "Mayeul",
-  role: "Journaliste cycliste",
+  author: "La rédaction",
+  role: "Revue d'actualité cycliste",
   email: "larevuecycliste@gmail.com",
   location: "France",
 };
@@ -53,7 +53,7 @@ const CATEGORIES = [
 //     title: "Titre de mon premier article",
 //     category: "Tactique",
 //     excerpt: "Un résumé en une ou deux phrases pour donner envie de lire.",
-//     author: "Mayeul",
+//     author: "La rédaction",
 //     date: "2026-08-03",
 //     readingTime: 5,
 //     featured: true,
