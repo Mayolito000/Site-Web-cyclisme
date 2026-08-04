@@ -377,6 +377,36 @@ ul { list-style: none; padding: 0; }
   transition: color var(--step-fast), border-color var(--step-fast), transform var(--step-fast);
 }
 .socials a:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+/* ---- Bandeau cookies ------------------------------------------------- */
+.cookie-banner {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+  padding: 0 var(--gutter) clamp(.8rem, 2vw, 1.2rem);
+  transform: translateY(130%); transition: transform .38s cubic-bezier(.2,.7,.2,1);
+  pointer-events: none;
+}
+.cookie-banner.is-visible { transform: none; }
+.cookie-banner__inner {
+  pointer-events: auto; max-width: var(--maxw); margin: 0 auto;
+  background: var(--ink-invert); color: var(--cream);
+  border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius);
+  box-shadow: var(--shadow-md); padding: 1.1rem 1.3rem;
+  display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap;
+}
+.cookie-banner__txt { flex: 1; min-width: 240px; font-size: .92rem; line-height: 1.5; color: #c9d0da; }
+.cookie-banner__txt a { color: var(--accent-soft); text-decoration: underline; }
+.cookie-banner__actions { display: flex; gap: .6rem; flex-shrink: 0; }
+.cookie-btn {
+  font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer;
+  padding: .62rem 1.25rem; border-radius: 999px; border: 1.5px solid transparent;
+  transition: background var(--step-fast), border-color var(--step-fast), transform var(--step-fast);
+}
+.cookie-btn:active { transform: translateY(1px); }
+.cookie-btn--primary { background: var(--accent); color: #fff; }
+.cookie-btn--primary:hover { background: var(--accent-dark); }
+.cookie-btn--ghost { background: transparent; color: var(--cream); border-color: rgba(255,255,255,.4); }
+.cookie-btn--ghost:hover { border-color: var(--cream); }
+@media (max-width: 560px){ .cookie-banner__actions { width: 100%; } .cookie-btn { flex: 1; } }
 @media (max-width: 680px){ .footer__grid { grid-template-columns: 1fr 1fr; } .footer__brand { grid-column: 1 / -1; } }
 
 /* ---- Reveal on scroll ------------------------------------------------- */
