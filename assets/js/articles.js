@@ -29,7 +29,7 @@
 
 const SITE = {
   name: "La Revue Cycliste",
-  tagline: "L'actualité cycliste, décryptée.",
+  tagline: "Toute l'actualité du cyclisme.",
   author: "La rédaction",
   role: "Revue d'actualité cycliste",
   email: "larevuecycliste@gmail.com",
