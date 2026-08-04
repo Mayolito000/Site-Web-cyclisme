@@ -75,25 +75,14 @@ L'e-mail de contact est repris automatiquement partout depuis `SITE.email`.
 > Va dans **Settings → General → Danger Zone → Change repository visibility → Public**.
 > (Sinon, le site ne sera pas accessible « à tout le monde ».)
 
-Ensuite, deux façons de publier — choisis la plus simple pour toi.
-
-### Option A — La plus simple (déployer depuis la branche)
+Ensuite, active GitHub Pages :
 
 1. **Settings → Pages**.
 2. **Build and deployment → Source** : choisis **Deploy from a branch**.
 3. Branche : la branche qui contient le code, dossier **`/ (root)`**. Enregistre.
-4. Patiente une minute : le site s'affiche à l'adresse indiquée en haut de la page Pages.
-
-### Option B — Via GitHub Actions (workflow inclus)
-
-Le dépôt contient déjà `.github/workflows/deploy.yml`.
-
-1. **Settings → Pages → Source** : choisis **GitHub Actions**.
-2. Le site se redéploie automatiquement à chaque push (le workflow se déclenche
-   sur `main` et sur la branche de développement actuelle).
-
-Dans les deux cas, l'adresse ressemble à :
-`https://<ton-utilisateur>.github.io/<nom-du-depot>/`
+4. Patiente une minute : le site se redéploie automatiquement à chaque push,
+   et s'affiche à l'adresse indiquée en haut de la page Pages :
+   `https://<ton-utilisateur>.github.io/<nom-du-depot>/`
 
 > Astuce : pour une URL plus courte, ajoute un domaine personnalisé dans
 > Settings → Pages (champ *Custom domain*).
@@ -126,7 +115,6 @@ python3 -m http.server 8000
 │   └── js/
 │       ├── articles.js # ← Le contenu (articles, rubriques, infos du site)
 │       └── main.js     # Rendu, filtres, navigation
-├── .github/workflows/deploy.yml   # Déploiement GitHub Pages
 └── .nojekyll
 ```
 
