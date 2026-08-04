@@ -33,11 +33,11 @@
      Aucune image externe : chaque article reçoit une vignette dessinée,
      déclinée selon son "tone". Motif : profil de col + roue stylisée.    */
   const TONES = {
-    red:   { a: "#e23a26", b: "#7d1a10", ink: "#fff2ee" },
-    gold:  { a: "#f2c230", b: "#b8860b", ink: "#2a2200" },
-    ink:   { a: "#2b2a26", b: "#0f0e0b", ink: "#f2c230" },
-    slate: { a: "#5b6b74", b: "#2c363c", ink: "#eaf1f4" },
-    sky:   { a: "#3d8fb0", b: "#1d4a5e", ink: "#eefaff" },
+    red:   { a: "#bd4633", b: "#7a2a1d", ink: "#f7ece6" },  /* terracotta */
+    gold:  { a: "#c9a86a", b: "#8a6a38", ink: "#241a08" },  /* sable */
+    ink:   { a: "#26374f", b: "#132239", ink: "#eee7d9" },  /* marine */
+    slate: { a: "#4c586b", b: "#2a3242", ink: "#eef1f4" },
+    sky:   { a: "#3f6c8f", b: "#1f3d5c", ink: "#eef6ff" },
   };
 
   function thumbSVG(article) {
@@ -147,7 +147,7 @@
   }
 
   function featurePlaceholderHTML() {
-    const svg = thumbSVG({ id: "soon-hero", category: "À venir", tone: "slate" });
+    const svg = thumbSVG({ id: "soon-hero", category: "À venir", tone: "ink" });
     return `<div class="thumb">${svg}</div>
       <div class="feature__body">
         <span class="chip chip--gold">À venir</span>
