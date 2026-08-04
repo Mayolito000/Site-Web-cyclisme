@@ -262,6 +262,47 @@
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", a.excerpt);
 
+    // SEO dynamique : canonical, Open Graph et données structurées de l'article
+    const base = "https://larevuecycliste.fr/";
+    const artUrl = base + "article.html?id=" + encodeURIComponent(a.id);
+    const img = (a.image && /^https?:/.test(a.image)) ? a.image : base + "assets/img/og-image.png";
+    const setMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
+    setMeta('link[rel="canonical"]', "href", artUrl);
+    setMeta('meta[property="og:type"]', "content", "article");
+    setMeta('meta[property="og:title"]', "content", a.title);
+    setMeta('meta[property="og:description"]', "content", a.excerpt);
+    setMeta('meta[property="og:url"]', "content", artUrl);
+    setMeta('meta[property="og:image"]', "content", img);
+    setMeta('meta[name="twitter:title"]', "content", a.title);
+    setMeta('meta[name="twitter:description"]', "content", a.excerpt);
+    setMeta('meta[name="twitter:image"]', "content", img);
+
+    const ld = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: a.title,
+      description: a.excerpt,
+      datePublished: a.date,
+      dateModified: a.date,
+      inLanguage: "fr-FR",
+      articleSection: a.category,
+      image: img,
+      author: { "@type": "Organization", name: SITE.name, url: base },
+      publisher: {
+        "@type": "Organization", name: SITE.name, url: base,
+        logo: { "@type": "ImageObject", url: base + "assets/img/og-image.png" },
+      },
+      mainEntityOfPage: { "@type": "WebPage", "@id": artUrl },
+    };
+    let ldEl = document.getElementById("js-article-ld");
+    if (!ldEl) {
+      ldEl = document.createElement("script");
+      ldEl.type = "application/ld+json";
+      ldEl.id = "js-article-ld";
+      document.head.appendChild(ldEl);
+    }
+    ldEl.textContent = JSON.stringify(ld);
+
     const bodyHTML = (a.body || []).map((blk) => {
       switch (blk.t) {
         case "h2":    return `<h2>${escapeHTML(blk.x)}</h2>`;
