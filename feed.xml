@@ -7,16 +7,7 @@
     <atom:link href="https://larevuecycliste.fr/feed.xml" rel="self" type="application/rss+xml" />
     <description>Analyses, décryptages et récits autour du cyclisme : tactique, matériel, entraînement, portraits et culture vélo.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Wed, 05 Aug 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 04 Aug 2026 08:00:00 GMT</lastBuildDate>
     <generator>build-feed.js (La Revue Cycliste)</generator>
-    <item>
-      <title>Pourquoi les cols décident (presque) toujours le Tour</title>
-      <link>https://larevuecycliste.fr/article.html?id=pourquoi-les-cols-decident-le-tour</link>
-      <guid isPermaLink="true">https://larevuecycliste.fr/article.html?id=pourquoi-les-cols-decident-le-tour</guid>
-      <pubDate>Wed, 05 Aug 2026 08:00:00 GMT</pubDate>
-      <dc:creator>La rédaction</dc:creator>
-      <category>Tactique</category>
-      <description>En montagne, les écarts se creusent et les stratégies se dévoilent. Petit tour d&apos;horizon de ce qui se joue vraiment quand la route s&apos;élève.</description>
-    </item>
   </channel>
 </rss>

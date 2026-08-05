@@ -71,37 +71,7 @@ const CATEGORIES = [
 // -------------------------------------------------------------------------
 
 const ARTICLES = [
-  // ⚠️ ARTICLE DE TEST — sers-t'en pour explorer le site, puis supprime ce
-  //     bloc (et l'image assets/img/article-test.jpg) quand tu veux.
-  {
-    id: "pourquoi-les-cols-decident-le-tour",
-    title: "Pourquoi les cols décident (presque) toujours le Tour",
-    category: "Tactique",
-    excerpt:
-      "En montagne, les écarts se creusent et les stratégies se dévoilent. Petit tour d'horizon de ce qui se joue vraiment quand la route s'élève.",
-    author: "La rédaction",
-    date: "2026-08-05",
-    readingTime: 3,
-    featured: true,
-    portfolio: true,
-    tone: "red",
-    image: "assets/img/article-test.jpg",
-    body: [
-      { t: "p", x: "Sur le plat, le peloton se neutralise : l'aspiration protège, les équipes contrôlent, et les écarts se comptent en secondes. En montagne, tout change. La pente supprime l'abri de l'aspiration, isole les coureurs et transforme chaque coup de pédale en test de vérité. C'est là, presque toujours, que se joue le classement général." },
-      { t: "h2", x: "La montagne, ce grand révélateur" },
-      { t: "p", x: "Dès que la route s'élève durablement, la vitesse chute et l'aérodynamisme cesse de compter. Reste l'essentiel : le rapport entre la puissance et le poids. Un col long agit comme un révélateur — impossible de se cacher dans les roues, chacun roule à son propre plafond." },
-      { t: "h2", x: "Le poids, le rythme et la tête" },
-      { t: "p", x: "Gagner en altitude, c'est d'abord une affaire de watts par kilo. Mais la physiologie ne fait pas tout : le placement avant le pied du col, la gestion de l'effort et le sang-froid pèsent tout autant. Une attaque part rarement au hasard." },
-      { t: "quote", x: "En montagne, on ne triche pas : la pente dit la vérité sur la forme du jour." },
-      { t: "list", x: [
-        "Le rapport poids/puissance, déterminant sur les longues ascensions.",
-        "Le placement au pied du col, pour ne pas subir le tempo.",
-        "La gestion de l'effort, pour ne pas exploser avant le sommet.",
-      ] },
-      { t: "h2", x: "Ce qu'il faut retenir" },
-      { t: "p", x: "Les cols ne récompensent pas seulement le plus fort, mais le plus lucide. C'est ce mélange de puissance, de tactique et de mental qui rend la haute montagne si décisive — et si passionnante à décrypter." },
-    ],
-  },
+  // Ajoutez vos articles ici (voir le modèle ci-dessus).
 ];
 
 /* Commentaires (Cusdis) — service gratuit, sans compte pour le lecteur.
