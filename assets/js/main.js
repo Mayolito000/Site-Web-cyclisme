@@ -448,9 +448,199 @@
     }
   }
 
+  /* ---- Recherche interne (overlay global) ----------------------------
+     100 % côté client : les articles sont déjà chargés en mémoire.
+     Insensible aux accents et à la casse, cherche dans le titre, la
+     rubrique, le chapô, le corps et l'auteur, avec surlignage.            */
+  function deburr(s) {
+    // Décompose puis retire les signes diacritiques (é→e, č→c, ñ→n…).
+    // La longueur est conservée pour les caractères précomposés, ce qui
+    // garde le surlignage aligné sur le texte d'origine.
+    return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  const norm = (s) => deburr(s).toLowerCase();
+  const bodyText = (a) => (a.body || []).map((b) => Array.isArray(b.x) ? b.x.join(" ") : (b.x || "")).join(" ");
+
+  function searchArticles(query) {
+    const tokens = norm(query).trim().split(/\s+/).filter(Boolean);
+    if (!tokens.length) return [];
+    return ARTICLES.map((a) => {
+      const t = norm(a.title), c = norm(a.category), e = norm(a.excerpt),
+            b = norm(bodyText(a)), au = norm(a.author || "");
+      const hay = [t, c, e, b, au].join("  ");
+      if (!tokens.every((tk) => hay.includes(tk))) return null;
+      let score = 0;
+      for (const tk of tokens) {
+        if (t.includes(tk)) score += 10;
+        if (c.includes(tk)) score += 6;
+        if (e.includes(tk)) score += 4;
+        if (au.includes(tk)) score += 3;
+        if (b.includes(tk)) score += 1;
+      }
+      if (t.startsWith(tokens[0])) score += 5;
+      return { a, score };
+    }).filter(Boolean)
+      .sort((x, y) => y.score - x.score || byDateDesc(x.a, y.a))
+      .map((r) => r.a);
+  }
+
+  function highlight(orig, tokens) {
+    orig = String(orig);
+    if (!tokens.length) return escapeHTML(orig);
+    const n = norm(orig); // aligné caractère par caractère avec orig
+    const ranges = [];
+    for (const tk of tokens) {
+      if (!tk) continue;
+      let i = 0;
+      while ((i = n.indexOf(tk, i)) !== -1) { ranges.push([i, i + tk.length]); i += tk.length; }
+    }
+    if (!ranges.length) return escapeHTML(orig);
+    ranges.sort((a, b) => a[0] - b[0]);
+    const merged = [];
+    for (const r of ranges) {
+      const last = merged[merged.length - 1];
+      if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+      else merged.push(r.slice());
+    }
+    let out = "", pos = 0;
+    for (const seg of merged) {
+      out += escapeHTML(orig.slice(pos, seg[0])) + "<mark>" + escapeHTML(orig.slice(seg[0], seg[1])) + "</mark>";
+      pos = seg[1];
+    }
+    return out + escapeHTML(orig.slice(pos));
+  }
+
+  function resultRow(a, tokens) {
+    const href = `article.html?id=${encodeURIComponent(a.id)}`;
+    return `<a class="search-result" href="${href}" role="option">
+      <span class="search-result__cat">${escapeHTML(a.category || "")}</span>
+      <span class="search-result__title">${highlight(a.title || "", tokens)}</span>
+      <span class="search-result__excerpt">${highlight(a.excerpt || "", tokens)}</span>
+      <span class="search-result__meta"><time datetime="${a.date}">${formatDate(a.date)}</time>${a.readingTime ? " · " + a.readingTime + " min" : ""}</span>
+    </a>`;
+  }
+
+  function initSearch() {
+    const nav = $(".nav");
+    if (!nav) return;
+
+    // Bouton loupe dans l'en-tête (toujours visible, desktop + mobile)
+    if (!$(".nav__search")) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "nav__search";
+      btn.setAttribute("aria-label", "Rechercher sur le site");
+      btn.setAttribute("aria-haspopup", "dialog");
+      btn.setAttribute("data-search-open", "");
+      btn.innerHTML = `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>`;
+      const toggle = $(".nav__toggle");
+      if (toggle) nav.insertBefore(btn, toggle); else nav.appendChild(btn);
+    }
+
+    // Overlay (construit une seule fois)
+    const modal = document.createElement("div");
+    modal.className = "search-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", "Recherche");
+    modal.hidden = true;
+    modal.innerHTML = `
+      <div class="search-modal__backdrop" data-search-close></div>
+      <div class="search-modal__panel">
+        <div class="search-modal__bar">
+          <svg class="search-modal__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+          <input type="search" class="search-modal__input" placeholder="Rechercher un article, une rubrique…" aria-label="Rechercher" aria-controls="js-search-results" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <button type="button" class="search-modal__close" data-search-close aria-label="Fermer la recherche">Échap</button>
+        </div>
+        <div class="search-modal__results" id="js-search-results" role="listbox" aria-label="Résultats"></div>
+      </div>`;
+    document.body.appendChild(modal);
+
+    const input = $(".search-modal__input", modal);
+    const results = $("#js-search-results", modal);
+    let lastFocus = null, sel = -1;
+
+    const rows = () => $$(".search-result", results);
+    function setSel(i) {
+      const r = rows();
+      if (!r.length) { sel = -1; return; }
+      sel = (i + r.length) % r.length;
+      r.forEach((el, k) => el.classList.toggle("is-sel", k === sel));
+      r[sel].scrollIntoView({ block: "nearest" });
+    }
+
+    function render() {
+      const q = input.value;
+      const tokens = norm(q).trim().split(/\s+/).filter(Boolean);
+      sel = -1;
+      if (!ARTICLES.length) {
+        results.innerHTML = `<p class="search-msg">Aucun article publié pour l'instant. La recherche s'activera dès la première publication.</p>`;
+        return;
+      }
+      if (!tokens.length) {
+        const recent = [...ARTICLES].sort(byDateDesc).slice(0, 5);
+        results.innerHTML = `<p class="search-msg">Tapez pour rechercher parmi ${ARTICLES.length} article${ARTICLES.length > 1 ? "s" : ""}.<span class="search-msg__hint">Articles récents</span></p>` + recent.map((a) => resultRow(a, [])).join("");
+        return;
+      }
+      const hits = searchArticles(q);
+      results.innerHTML = hits.length
+        ? `<p class="search-count">${hits.length} résultat${hits.length > 1 ? "s" : ""}</p>` + hits.map((a) => resultRow(a, tokens)).join("")
+        : `<p class="search-msg">Aucun résultat pour « ${escapeHTML(q.trim())} ».</p>`;
+    }
+
+    function open() {
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      document.documentElement.classList.add("search-open");
+      render();
+      requestAnimationFrame(() => { modal.classList.add("is-open"); input.focus(); });
+    }
+    function close() {
+      modal.classList.remove("is-open");
+      document.documentElement.classList.remove("search-open");
+      setTimeout(() => { modal.hidden = true; }, 250);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-search-open]")) { e.preventDefault(); open(); }
+      else if (e.target.closest("[data-search-close]")) { e.preventDefault(); close(); }
+    });
+
+    input.addEventListener("input", render);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); setSel(sel + 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); setSel(sel - 1); }
+      else if (e.key === "Enter") {
+        const r = rows();
+        const target = (sel >= 0 && r[sel]) || r[0];
+        if (target) { e.preventDefault(); window.location.href = target.getAttribute("href"); }
+      }
+    });
+
+    // Raccourcis : Échap ferme ; Ctrl/⌘+K bascule ; « / » ouvre
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) { e.preventDefault(); close(); return; }
+      const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || "") || e.target.isContentEditable;
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) { e.preventDefault(); modal.hidden ? open() : close(); }
+      else if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey && !typing && modal.hidden) { e.preventDefault(); open(); }
+    });
+
+    // Piège à focus minimal : Tab reste dans le panneau
+    modal.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      const f = [input].concat(rows(), [$(".search-modal__close", modal)]).filter(Boolean);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+
   /* ---- Boot ----------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     initChrome();
+    initSearch();
     renderHome();
     renderNews();
     renderArticle();
