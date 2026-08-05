@@ -65,8 +65,11 @@ function buildFeed() {
     .filter((a) => a && a.id && a.title)
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-  // Date du dernier article (ou date de génération si le flux est vide).
-  const lastBuild = items.length ? rfc822(items[0].date) : new Date().toUTCString();
+  // Date du dernier article. Quand le flux est vide, on fige la date de
+  // lancement plutôt que l'heure courante : sinon le flux changerait à
+  // chaque régénération et le robot committerait inutilement.
+  const LAUNCH = "Mon, 04 Aug 2026 08:00:00 GMT";
+  const lastBuild = items.length ? rfc822(items[0].date) : LAUNCH;
 
   const itemXml = items
     .map((a) => {
