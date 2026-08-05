@@ -341,6 +341,9 @@
         </div>
       </div>`;
 
+    // Section commentaires
+    renderComments(a);
+
     // Articles liés (même rubrique)
     const related = $("#js-related");
     if (related) {
@@ -352,6 +355,60 @@
         related.remove();
       }
     }
+  }
+
+  /* ---- Commentaires (Cusdis) ------------------------------------------
+     Service externe gratuit, sans compte pour le lecteur. Le script n'est
+     chargé que si un App ID est configuré (articles.js → COMMENTS), et
+     seulement quand la zone approche de l'écran (respect vie privée/perf). */
+  function loadCusdisWhenVisible(target, host) {
+    const src = String(host).replace(/\/+$/, "") + "/js/cusdis.es.js";
+    let done = false;
+    const inject = () => {
+      if (done) return;
+      done = true;
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = src;
+      document.body.appendChild(s);
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { inject(); io.disconnect(); }
+      }, { rootMargin: "600px 0px" });
+      io.observe(target);
+    } else {
+      inject();
+    }
+  }
+
+  function renderComments(a) {
+    const box = $("#js-comments");
+    if (!box) return;
+    const cfg = window.COMMENTS || {};
+    box.innerHTML = `
+      <div class="section-head"><div>
+        <span class="eyebrow">Réagir</span>
+        <h2>Commentaires</h2>
+      </div></div>
+      <p class="comments-note">Exprimez-vous librement, sans créer de compte — un pseudo suffit. Les commentaires sont relus avant d'être publiés.</p>
+      <div class="comments-slot" id="js-comments-slot"></div>`;
+    const slot = $("#js-comments-slot", box);
+    if (!cfg.appId) {
+      slot.innerHTML = `<p class="comments-note comments-note--muted">💬 Les commentaires seront activés très prochainement.</p>`;
+      return;
+    }
+    const host = cfg.host || "https://cusdis.com";
+    const thread = document.createElement("div");
+    thread.id = "cusdis_thread";
+    thread.setAttribute("data-host", host);
+    thread.setAttribute("data-app-id", cfg.appId);
+    thread.setAttribute("data-page-id", a.id);
+    thread.setAttribute("data-page-url", "https://larevuecycliste.fr/article.html?id=" + encodeURIComponent(a.id));
+    thread.setAttribute("data-page-title", a.title);
+    thread.setAttribute("data-theme", "light");
+    slot.appendChild(thread);
+    loadCusdisWhenVisible(slot, host);
   }
 
   /* ---- Page : PORTFOLIO ---------------------------------------------- */

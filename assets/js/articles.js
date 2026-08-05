@@ -74,7 +74,17 @@ const ARTICLES = [
   // Ajoutez vos articles ici (voir le modèle ci-dessus).
 ];
 
+/* Commentaires (Cusdis) — service gratuit, sans compte pour le lecteur.
+   Pour ACTIVER : collez l'App ID fourni par votre tableau de bord Cusdis
+   entre les guillemets de `appId`. Tant qu'il est vide, une mention
+   « bientôt disponible » s'affiche sous les articles. */
+const COMMENTS = {
+  host: "https://cusdis.com",
+  appId: "",   // ← À COMPLÉTER : App ID Cusdis
+};
+
 /* Exposé globalement pour les autres scripts */
 window.SITE = SITE;
 window.CATEGORIES = CATEGORIES;
 window.ARTICLES = ARTICLES;
+window.COMMENTS = COMMENTS;
