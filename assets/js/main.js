@@ -171,7 +171,7 @@
       const latest = $("#js-latest");
       if (latest) latest.innerHTML = comingSoonHTML(
         "Les premiers articles arrivent bientôt",
-        "Le site vient tout juste de démarrer. Les premiers articles arrivent bientôt — repassez vite."
+        "Le site vient tout juste de démarrer. Les premiers articles arrivent bientôt, repassez vite."
       );
       const more = $("#js-latest-more");
       if (more) more.style.display = "none";
@@ -442,7 +442,7 @@
         <span class="eyebrow">Réagir</span>
         <h2>Commentaires</h2>
       </div></div>
-      <p class="comments-note">Exprimez-vous librement, sans créer de compte — un pseudo suffit. Les commentaires sont relus avant d'être publiés.</p>
+      <p class="comments-note">Exprimez-vous librement, sans créer de compte, un pseudo suffit. Les commentaires sont relus avant d'être publiés.</p>
       <div class="comments-slot" id="js-comments-slot"></div>`;
     const slot = $("#js-comments-slot", box);
     if (!cfg.appId) {
