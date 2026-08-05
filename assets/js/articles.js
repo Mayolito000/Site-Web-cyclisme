@@ -80,7 +80,7 @@ const ARTICLES = [
    « bientôt disponible » s'affiche sous les articles. */
 const COMMENTS = {
   host: "https://cusdis.com",
-  appId: "",   // ← À COMPLÉTER : App ID Cusdis
+  appId: "72c103d4-ca8e-41a6-be60-a9f633f44a43",
 };
 
 /* Exposé globalement pour les autres scripts */
