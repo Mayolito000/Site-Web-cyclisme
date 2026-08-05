@@ -6,7 +6,9 @@
    Champs :
      id         : identifiant unique dans l'URL (ex. article.html?id=mon-article)
      title      : titre
-     category   : rubrique (doit exister dans CATEGORIES plus bas)
+     category   : (FACULTATIF) rubrique de l'article. Laissez vide : il n'y a
+                    pas de rubriques pour l'instant. Pour en réintroduire,
+                    remplissez le tableau CATEGORIES ci-dessous.
      excerpt    : chapô / résumé court (2 phrases)
      author     : auteur
      date       : "AAAA-MM-JJ"
@@ -36,14 +38,9 @@ const SITE = {
   location: "France",
 };
 
-const CATEGORIES = [
-  "Tendances",
-  "Tactique",
-  "Matériel",
-  "Entraînement",
-  "Portraits",
-  "Culture",
-];
+// Pas de rubriques pour l'instant. Pour en ajouter, listez-les ici
+// (ex. ["Tactique", "Matériel"]) : le filtre par rubrique réapparaîtra.
+const CATEGORIES = [];
 
 // -------------------------------------------------------------------------
 // MODÈLE À COPIER dans le tableau ARTICLES ci-dessous :

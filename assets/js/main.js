@@ -97,10 +97,11 @@
 
   /* ---- Fabriques de fragments ---------------------------------------- */
   function metaHTML(a) {
+    const chip = a.category
+      ? `<span class="chip">${escapeHTML(a.category)}</span>\n      <span class="sep"></span>\n      `
+      : "";
     return `<span class="meta">
-      <span class="chip">${escapeHTML(a.category)}</span>
-      <span class="sep"></span>
-      <time datetime="${a.date}">${formatDate(a.date)}</time>
+      ${chip}<time datetime="${a.date}">${formatDate(a.date)}</time>
       <span class="sep"></span>
       <span class="rt">${a.readingTime} min</span>
     </span>`;
@@ -184,7 +185,7 @@
       featBox.innerHTML = `
         <a href="${href}" class="thumb" aria-label="${escapeHTML(featured.title)}">${mediaHTML(featured)}</a>
         <div class="feature__body">
-          <span class="chip chip--gold">À la une · ${escapeHTML(featured.category)}</span>
+          <span class="chip chip--gold">À la une${featured.category ? " · " + escapeHTML(featured.category) : ""}</span>
           <h3><a href="${href}">${escapeHTML(featured.title)}</a></h3>
           <p>${escapeHTML(featured.excerpt)}</p>
           <div class="meta">
@@ -219,19 +220,24 @@
       return;
     }
 
-    // Construire les filtres
+    // Construire les filtres (seulement s'il existe des rubriques utilisées)
+    const usedCats = CATEGORIES.filter((c) => sorted.some((a) => a.category === c));
     if (filterBox) {
-      const cats = ["Tout", ...CATEGORIES.filter((c) => sorted.some((a) => a.category === c))];
-      filterBox.innerHTML = cats.map((c, i) =>
-        `<button class="filter${i === 0 ? " is-active" : ""}" data-cat="${escapeHTML(c)}">${escapeHTML(c)}</button>`
-      ).join("");
-      filterBox.addEventListener("click", (e) => {
-        const btn = e.target.closest(".filter");
-        if (!btn) return;
-        $$(".filter", filterBox).forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        paint(btn.dataset.cat);
-      });
+      if (!usedCats.length) {
+        filterBox.style.display = "none";
+      } else {
+        const cats = ["Tout", ...usedCats];
+        filterBox.innerHTML = cats.map((c, i) =>
+          `<button class="filter${i === 0 ? " is-active" : ""}" data-cat="${escapeHTML(c)}">${escapeHTML(c)}</button>`
+        ).join("");
+        filterBox.addEventListener("click", (e) => {
+          const btn = e.target.closest(".filter");
+          if (!btn) return;
+          $$(".filter", filterBox).forEach((b) => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          paint(btn.dataset.cat);
+        });
+      }
     }
 
     function paint(cat) {
@@ -285,7 +291,6 @@
       datePublished: a.date,
       dateModified: a.date,
       inLanguage: "fr-FR",
-      articleSection: a.category,
       image: img,
       author: { "@type": "Organization", name: SITE.name, url: base },
       publisher: {
@@ -294,6 +299,7 @@
       },
       mainEntityOfPage: { "@type": "WebPage", "@id": artUrl },
     };
+    if (a.category) ld.articleSection = a.category;
     let ldEl = document.getElementById("js-article-ld");
     if (!ldEl) {
       ldEl = document.createElement("script");
@@ -303,17 +309,14 @@
     }
     ldEl.textContent = JSON.stringify(ld);
 
-    // Fil d'Ariane structuré (Google)
-    const crumbs = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: base },
-        { "@type": "ListItem", position: 2, name: "Actualités", item: base + "actualites.html" },
-        { "@type": "ListItem", position: 3, name: a.category, item: base + "actualites.html" },
-        { "@type": "ListItem", position: 4, name: a.title, item: artUrl },
-      ],
-    };
+    // Fil d'Ariane structuré (Google) — la rubrique n'est incluse que si elle existe
+    const crumbItems = [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: base },
+      { "@type": "ListItem", position: 2, name: "Actualités", item: base + "actualites.html" },
+    ];
+    if (a.category) crumbItems.push({ "@type": "ListItem", position: 3, name: a.category, item: base + "actualites.html" });
+    crumbItems.push({ "@type": "ListItem", position: crumbItems.length + 1, name: a.title, item: artUrl });
+    const crumbs = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbItems };
     let bcEl = document.getElementById("js-breadcrumb-ld");
     if (!bcEl) {
       bcEl = document.createElement("script");
@@ -353,8 +356,8 @@
 
     root.innerHTML = `
       <div class="wrap article-hero">
-        <p class="breadcrumb"><a href="index.html">Accueil</a> / <a href="actualites.html">Actualités</a> / ${escapeHTML(a.category)}</p>
-        <span class="chip">${escapeHTML(a.category)}</span>
+        <p class="breadcrumb"><a href="index.html">Accueil</a> / <a href="actualites.html">Actualités</a>${a.category ? " / " + escapeHTML(a.category) : ""}</p>
+        ${a.category ? `<span class="chip">${escapeHTML(a.category)}</span>` : ""}
         <h1 class="article-title">${escapeHTML(a.title)}</h1>
         <p class="article-standfirst">${escapeHTML(a.excerpt)}</p>
         <div class="article-byline">
@@ -374,7 +377,7 @@
       <div class="wrap">
         <div class="article-foot">
           <div class="tags">
-            <span class="tag">#${escapeHTML(a.category)}</span>
+            ${a.category ? `<span class="tag">#${escapeHTML(a.category)}</span>` : ""}
             <span class="tag">#cyclisme</span>
           </div>
           <a class="btn btn--ghost" href="actualites.html">← Tous les articles</a>
@@ -388,11 +391,13 @@
     // Section commentaires
     renderComments(a);
 
-    // Articles liés (même rubrique)
+    // À lire ensuite : même rubrique si elle existe, sinon les plus récents
     const related = $("#js-related");
     if (related) {
-      const rel = ARTICLES.filter((x) => x.category === a.category && x.id !== a.id)
-        .sort(byDateDesc).slice(0, 3);
+      const pool = a.category
+        ? ARTICLES.filter((x) => x.category === a.category && x.id !== a.id)
+        : ARTICLES.filter((x) => x.id !== a.id);
+      const rel = pool.sort(byDateDesc).slice(0, 3);
       if (rel.length) {
         $("#js-related-grid").innerHTML = rel.map(cardHTML).join("");
       } else {
@@ -652,7 +657,7 @@
       <div class="search-modal__panel">
         <div class="search-modal__bar">
           <svg class="search-modal__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
-          <input type="search" class="search-modal__input" placeholder="Rechercher un article, une rubrique…" aria-label="Rechercher" aria-controls="js-search-results" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <input type="search" class="search-modal__input" placeholder="Rechercher un article…" aria-label="Rechercher" aria-controls="js-search-results" autocomplete="off" autocapitalize="off" spellcheck="false" />
           <button type="button" class="search-modal__close" data-search-close aria-label="Fermer la recherche">Échap</button>
         </div>
         <div class="search-modal__results" id="js-search-results" role="listbox" aria-label="Résultats"></div>
