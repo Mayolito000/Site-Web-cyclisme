@@ -303,14 +303,51 @@
     }
     ldEl.textContent = JSON.stringify(ld);
 
+    // Fil d'Ariane structuré (Google)
+    const crumbs = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: base },
+        { "@type": "ListItem", position: 2, name: "Actualités", item: base + "actualites.html" },
+        { "@type": "ListItem", position: 3, name: a.category, item: base + "actualites.html" },
+        { "@type": "ListItem", position: 4, name: a.title, item: artUrl },
+      ],
+    };
+    let bcEl = document.getElementById("js-breadcrumb-ld");
+    if (!bcEl) {
+      bcEl = document.createElement("script");
+      bcEl.type = "application/ld+json";
+      bcEl.id = "js-breadcrumb-ld";
+      document.head.appendChild(bcEl);
+    }
+    bcEl.textContent = JSON.stringify(crumbs);
+
+    // Corps + collecte des titres pour le sommaire (avec ancres)
+    const headings = [];
+    const usedIds = {};
     const bodyHTML = (a.body || []).map((blk) => {
       switch (blk.t) {
-        case "h2":    return `<h2>${escapeHTML(blk.x)}</h2>`;
+        case "h2": {
+          let id = slugify(blk.x) || "section";
+          while (usedIds[id]) id += "-b";
+          usedIds[id] = true;
+          headings.push({ id, text: blk.x });
+          return `<h2 id="${id}">${escapeHTML(blk.x)}</h2>`;
+        }
         case "quote": return `<blockquote>${escapeHTML(blk.x)}</blockquote>`;
         case "list":  return `<ul class="bullets">${(blk.x || []).map((li) => `<li>${escapeHTML(li)}</li>`).join("")}</ul>`;
         default:      return `<p>${escapeHTML(blk.x)}</p>`;
       }
     }).join("");
+
+    // Sommaire automatique (articles longs : au moins 3 sous-titres)
+    const tocHTML = headings.length >= 3
+      ? `<div class="wrap"><nav class="toc" aria-label="Sommaire">
+           <div class="toc__title">Sommaire</div>
+           <ol>${headings.map((h) => `<li><a href="#${h.id}">${escapeHTML(h.text)}</a></li>`).join("")}</ol>
+         </nav></div>`
+      : "";
 
     const initial = (a.author || "?").trim().charAt(0).toUpperCase();
 
@@ -330,7 +367,9 @@
         </div>
       </div>
       <div class="wrap article-cover"><div class="thumb">${mediaHTML(a)}</div></div>
+      ${tocHTML}
       <div class="wrap"><div class="prose">${bodyHTML}</div></div>
+      <div class="wrap">${shareHTML(a, artUrl)}</div>
       <div class="wrap">
         <div class="article-foot">
           <div class="tags">
@@ -340,6 +379,9 @@
           <a class="btn btn--ghost" href="actualites.html">← Tous les articles</a>
         </div>
       </div>`;
+
+    // Boutons de partage
+    initArticleShare(a, artUrl);
 
     // Section commentaires
     renderComments(a);
@@ -696,10 +738,135 @@
     });
   }
 
+  /* ---- Partage d'article ---------------------------------------------- */
+  function slugify(s) {
+    return "sec-" + deburr(String(s)).toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 48);
+  }
+
+  const SHARE_ICONS = {
+    native: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>`,
+    wa: `<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.52 12.99c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>`,
+    x: `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+    fb: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>`,
+    link: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  };
+
+  function shareHTML(a, url) {
+    const u = encodeURIComponent(url);
+    const t = encodeURIComponent(a.title);
+    return `<div class="share">
+      <span class="share__label">Partager</span>
+      <div class="share__btns">
+        <button type="button" class="share__btn" data-share-native hidden>${SHARE_ICONS.native}<span>Partager</span></button>
+        <a class="share__btn" href="https://wa.me/?text=${t}%20${u}" target="_blank" rel="noopener" aria-label="Partager sur WhatsApp">${SHARE_ICONS.wa}</a>
+        <a class="share__btn" href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener" aria-label="Partager sur X">${SHARE_ICONS.x}</a>
+        <a class="share__btn" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener" aria-label="Partager sur Facebook">${SHARE_ICONS.fb}</a>
+        <button type="button" class="share__btn" data-share-copy data-url="${escapeHTML(url)}">${SHARE_ICONS.link}<span>Copier le lien</span></button>
+      </div>
+    </div>`;
+  }
+
+  function initArticleShare(a, url) {
+    const nativeBtn = $("[data-share-native]");
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener("click", () => {
+        navigator.share({ title: a.title, text: a.title, url: url }).catch(() => {});
+      });
+    }
+    const copyBtn = $("[data-share-copy]");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", () => {
+        const label = copyBtn.querySelector("span");
+        const prev = label ? label.textContent : "";
+        const flash = () => {
+          copyBtn.classList.add("is-copied");
+          if (label) label.textContent = "Lien copié !";
+          setTimeout(() => { copyBtn.classList.remove("is-copied"); if (label) label.textContent = prev; }, 1800);
+        };
+        const fallback = () => {
+          const ta = document.createElement("textarea");
+          ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.focus(); ta.select();
+          try { document.execCommand("copy"); flash(); } catch (e) {}
+          document.body.removeChild(ta);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(flash).catch(fallback);
+        } else { fallback(); }
+      });
+    }
+  }
+
+  /* ---- Bascule de thème (clair / sombre) ------------------------------ */
+  function initTheme() {
+    const KEY = "lrc-theme";
+    const root = document.documentElement;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const apply = (t) => {
+      root.setAttribute("data-theme", t);
+      if (meta) meta.setAttribute("content", t === "dark" ? "#0f131b" : "#16273f");
+    };
+    // Le thème initial est déjà posé par le script en <head> ; on s'aligne.
+    apply(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
+    const nav = $(".nav");
+    if (!nav || $(".theme-toggle")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theme-toggle";
+    btn.setAttribute("aria-label", "Basculer entre le thème clair et sombre");
+    btn.innerHTML =
+      `<svg class="icon-moon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>` +
+      `<svg class="icon-sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></svg>`;
+    nav.insertBefore(btn, $(".nav__search") || $(".nav__toggle") || null);
+    btn.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      apply(next);
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+    });
+  }
+
+  /* ---- Aides à la lecture (progression + retour en haut) -------------- */
+  function initReadingAids() {
+    const article = $("#js-article");
+    let bar = null;
+    if (article) {
+      bar = document.createElement("div");
+      bar.className = "read-progress";
+      bar.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bar);
+    }
+    const top = document.createElement("button");
+    top.type = "button";
+    top.className = "to-top";
+    top.setAttribute("aria-label", "Revenir en haut de la page");
+    top.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`;
+    document.body.appendChild(top);
+    top.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    });
+
+    const onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      if (bar) {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (h > 0 ? Math.min(100, Math.max(0, (y / h) * 100)) : 0) + "%";
+      }
+      top.classList.toggle("is-visible", y > 600);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+  }
+
   /* ---- Boot ----------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     initChrome();
+    initTheme();
     initSearch();
+    initReadingAids();
     renderHome();
     renderNews();
     renderArticle();
