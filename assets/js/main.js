@@ -171,7 +171,7 @@
       const latest = $("#js-latest");
       if (latest) latest.innerHTML = comingSoonHTML(
         "Les premiers articles arrivent bientôt",
-        "Le site vient tout juste de démarrer. Les premiers articles arrivent bientôt, repassez vite."
+        "Le site vient tout juste de démarrer, revenez d'ici quelques jours."
       );
       const more = $("#js-latest-more");
       if (more) more.style.display = "none";

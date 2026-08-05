@@ -59,7 +59,7 @@ function buildFeed() {
   const { SITE, ARTICLES } = loadData();
   const name = SITE.name || "La Revue Cycliste";
   const desc =
-    "Un site sur le cyclisme, écrit par passion du vélo. Les courses, le matériel et les coureurs.";
+    "Un site sur le cyclisme, écrit par passion du vélo.";
 
   const items = [...ARTICLES]
     .filter((a) => a && a.id && a.title)
