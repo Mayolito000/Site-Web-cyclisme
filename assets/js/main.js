@@ -942,10 +942,16 @@
     observeReveals();
   });
 
-  /* ---- Service worker : lecture hors-ligne ---------------------------- */
+  /* ---- Désinstallation de l'ancien service worker --------------------
+     La lecture hors-ligne a été retirée : on désinstalle le service worker
+     et on vide son cache, pour que les mises à jour du site apparaissent
+     immédiatement (fini le « recharger deux fois »).                      */
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/sw.js").catch(() => {});
-    });
+    navigator.serviceWorker.getRegistrations()
+      .then((regs) => regs.forEach((r) => r.unregister()))
+      .catch(() => {});
+  }
+  if (window.caches && caches.keys) {
+    caches.keys().then((keys) => keys.forEach((k) => caches.delete(k))).catch(() => {});
   }
 })();
