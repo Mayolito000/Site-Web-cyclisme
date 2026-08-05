@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>La Revue Cycliste</title>
+    <link>https://larevuecycliste.fr/</link>
+    <atom:link href="https://larevuecycliste.fr/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Analyses, décryptages et récits autour du cyclisme : tactique, matériel, entraînement, portraits et culture vélo.</description>
+    <language>fr-FR</language>
+    <lastBuildDate>Wed, 05 Aug 2026 06:21:16 GMT</lastBuildDate>
+    <generator>build-feed.js (La Revue Cycliste)</generator>
+  </channel>
+</rss>

@@ -1,0 +1,45 @@
+name: Générer le flux RSS
+
+# Régénère feed.xml automatiquement dès que la base d'articles change,
+# puis le committe. Aucune action manuelle nécessaire.
+on:
+  push:
+    paths:
+      - "assets/js/articles.js"
+      - "scripts/build-feed.js"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-feed-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Générer feed.xml
+        run: node scripts/build-feed.js
+
+      - name: Committer le flux si modifié
+        run: |
+          if git diff --quiet -- feed.xml; then
+            echo "feed.xml inchangé — rien à committer."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.xml
+          git commit -m "Mettre à jour le flux RSS (feed.xml)"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
