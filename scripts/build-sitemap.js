@@ -53,6 +53,7 @@ function build(articles) {
     urlEntry(SITE_URL, { lastmod: newest, changefreq: "weekly", priority: "1.0" }),
     urlEntry(SITE_URL + "actualites.html", { lastmod: newest, changefreq: "weekly", priority: "0.8" }),
     urlEntry(SITE_URL + "portfolio.html", { lastmod: newest, changefreq: "monthly", priority: "0.6" }),
+    urlEntry(SITE_URL + "a-propos.html", { changefreq: "yearly", priority: "0.5" }),
   ];
   for (const a of sorted) {
     entries.push(urlEntry(SITE_URL + "article.html?id=" + encodeURIComponent(a.id),
@@ -66,4 +67,4 @@ function build(articles) {
 
 const articles = loadArticles();
 fs.writeFileSync(OUTPUT, build(articles), "utf8");
-console.log(`sitemap.xml généré — 3 pages + ${articles.length} article(s).`);
+console.log(`sitemap.xml généré — pages fixes + ${articles.length} article(s).`);

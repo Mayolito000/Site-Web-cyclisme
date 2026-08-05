@@ -365,6 +365,7 @@
             <span class="sep"></span><span class="rt">${a.readingTime} min de lecture</span>
           </span>
         </div>
+        ${listenHTML()}
       </div>
       <div class="wrap article-cover"><div class="thumb">${mediaHTML(a)}</div></div>
       ${tocHTML}
@@ -380,8 +381,9 @@
         </div>
       </div>`;
 
-    // Boutons de partage
+    // Boutons de partage + écoute vocale
     initArticleShare(a, artUrl);
+    initListen(a);
 
     // Section commentaires
     renderComments(a);
@@ -799,6 +801,72 @@
     }
   }
 
+  /* ---- Écouter l'article (synthèse vocale du navigateur) -------------- */
+  function listenHTML() {
+    return `<button type="button" class="listen-btn" data-listen hidden aria-label="Écouter l'article à voix haute">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-5a9 9 0 0 1 18 0v5"/><path d="M18 19a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1zM6 19a2 2 0 0 1-2-2v-1a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1z"/></svg>
+      <span data-listen-label>Écouter</span>
+    </button>`;
+  }
+
+  function articleSpeechChunks(a) {
+    const raw = [a.title, a.excerpt];
+    (a.body || []).forEach((b) => {
+      if (b.t === "list") { (b.x || []).forEach((li) => raw.push(li)); }
+      else if (typeof b.x === "string") { raw.push(b.x); }
+    });
+    // Découpage en phrases courtes : évite les coupures des navigateurs sur
+    // les longues énonciations, et permet une lecture plus fluide.
+    const out = [];
+    raw.filter(Boolean).forEach((s) => {
+      String(s).split(/(?<=[.!?…])\s+/).forEach((seg) => {
+        const t = seg.trim();
+        if (t) out.push(t);
+      });
+    });
+    return out;
+  }
+
+  function initListen(a) {
+    const btn = $("[data-listen]");
+    if (!btn) return;
+    const synth = window.speechSynthesis;
+    if (!synth || typeof SpeechSynthesisUtterance === "undefined") return; // non supporté : reste caché
+    btn.hidden = false;
+
+    const label = btn.querySelector("[data-listen-label]");
+    const setLabel = (t) => { if (label) label.textContent = t; };
+    const chunks = articleSpeechChunks(a);
+    let state = "idle"; // idle | playing | paused
+
+    const frVoice = () => {
+      const vs = synth.getVoices() || [];
+      return vs.find((v) => /^fr(-|_|$)/i.test(v.lang)) || vs.find((v) => /fr/i.test(v.lang)) || null;
+    };
+    const reset = () => { state = "idle"; btn.classList.remove("is-playing"); setLabel("Écouter"); };
+
+    function speakAll() {
+      synth.cancel();
+      const voice = frVoice();
+      chunks.forEach((text, i) => {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "fr-FR";
+        if (voice) u.voice = voice;
+        if (i === chunks.length - 1) u.onend = reset;
+        synth.speak(u);
+      });
+    }
+
+    btn.addEventListener("click", () => {
+      if (state === "idle") { speakAll(); state = "playing"; btn.classList.add("is-playing"); setLabel("Pause"); }
+      else if (state === "playing") { synth.pause(); state = "paused"; setLabel("Reprendre"); }
+      else { synth.resume(); state = "playing"; setLabel("Pause"); }
+    });
+
+    // Couper la lecture quand on quitte la page
+    ["pagehide", "beforeunload"].forEach((ev) => window.addEventListener(ev, () => synth.cancel()));
+  }
+
   /* ---- Bascule de thème (clair / sombre) ------------------------------ */
   function initTheme() {
     const KEY = "lrc-theme";
@@ -873,4 +941,11 @@
     renderPortfolio();
     observeReveals();
   });
+
+  /* ---- Service worker : lecture hors-ligne ---------------------------- */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    });
+  }
 })();

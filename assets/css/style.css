@@ -624,3 +624,13 @@ ul { list-style: none; padding: 0; }
 .toc a::before { content: counter(toc, decimal-leading-zero); color: var(--accent); font-family: var(--mono); font-size: .8rem; }
 .toc a:hover { color: var(--accent); }
 .prose h2 { scroll-margin-top: 90px; }
+
+/* ---- Écouter l'article ------------------------------------------------ */
+.listen-btn {
+  display: inline-flex; align-items: center; gap: .45rem; height: 40px; padding: 0 .95rem;
+  margin-top: 1.3rem; border: 1px solid var(--line); background: var(--surface);
+  border-radius: 9px; color: var(--ink-soft); font-size: .85rem; font-weight: 500; cursor: pointer;
+  transition: color var(--step-fast), border-color var(--step-fast), background var(--step-fast);
+}
+.listen-btn:hover { color: var(--ink); border-color: var(--ink); }
+.listen-btn.is-playing { color: var(--accent); border-color: var(--accent); }
