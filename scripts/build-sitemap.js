@@ -54,6 +54,7 @@ function build(articles) {
     urlEntry(SITE_URL + "actualites.html", { lastmod: newest, changefreq: "weekly", priority: "0.8" }),
     urlEntry(SITE_URL + "portfolio.html", { lastmod: newest, changefreq: "monthly", priority: "0.6" }),
     urlEntry(SITE_URL + "a-propos.html", { changefreq: "yearly", priority: "0.5" }),
+    urlEntry(SITE_URL + "liens.html", { changefreq: "yearly", priority: "0.4" }),
   ];
   for (const a of sorted) {
     entries.push(urlEntry(SITE_URL + "article.html?id=" + encodeURIComponent(a.id),
