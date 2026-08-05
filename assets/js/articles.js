@@ -79,6 +79,7 @@ const ARTICLES = [
    entre les guillemets de `appId`. Tant qu'il est vide, une mention
    « bientôt disponible » s'affiche sous les articles. */
 const COMMENTS = {
+  enabled: false,   // ← désactivés pour l'instant. Repassez à true pour réactiver.
   host: "https://cusdis.com",
   appId: "72c103d4-ca8e-41a6-be60-a9f633f44a43",
 };

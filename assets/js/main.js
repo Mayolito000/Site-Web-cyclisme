@@ -386,6 +386,8 @@
     const box = $("#js-comments");
     if (!box) return;
     const cfg = window.COMMENTS || {};
+    // Commentaires désactivés : on retire la section (rien ne s'affiche, aucun script chargé).
+    if (!cfg.enabled) { box.remove(); return; }
     box.innerHTML = `
       <div class="section-head"><div>
         <span class="eyebrow">Réagir</span>
