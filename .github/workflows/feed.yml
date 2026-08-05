@@ -1,12 +1,13 @@
-name: Générer le flux RSS
+name: Générer le flux RSS et le sitemap
 
-# Régénère feed.xml automatiquement dès que la base d'articles change,
-# puis le committe. Aucune action manuelle nécessaire.
+# Régénère feed.xml et sitemap.xml automatiquement dès que la base
+# d'articles change, puis les committe. Aucune action manuelle nécessaire.
 on:
   push:
     paths:
       - "assets/js/articles.js"
       - "scripts/build-feed.js"
+      - "scripts/build-sitemap.js"
   workflow_dispatch: {}
 
 permissions:
@@ -28,18 +29,20 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Générer feed.xml
-        run: node scripts/build-feed.js
-
-      - name: Committer le flux si modifié
+      - name: Générer feed.xml et sitemap.xml
         run: |
-          if git diff --quiet -- feed.xml; then
-            echo "feed.xml inchangé — rien à committer."
+          node scripts/build-feed.js
+          node scripts/build-sitemap.js
+
+      - name: Committer si modifié
+        run: |
+          if git diff --quiet -- feed.xml sitemap.xml; then
+            echo "Aucun changement — rien à committer."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add feed.xml
-          git commit -m "Mettre à jour le flux RSS (feed.xml)"
+          git add feed.xml sitemap.xml
+          git commit -m "Mettre à jour le flux RSS et le sitemap"
           git pull --rebase origin "${GITHUB_REF_NAME}" || true
           git push origin "HEAD:${GITHUB_REF_NAME}"
