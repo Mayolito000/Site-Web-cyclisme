@@ -929,88 +929,11 @@
     onScroll();
   }
 
-  /* ---- Fenêtre « Nous contacter » ------------------------------------
-     Les liens mailto ne s'ouvrent pas sur les ordinateurs sans logiciel
-     de messagerie configuré. Cette petite fenêtre affiche l'adresse (avec
-     « Copier ») ET propose d'ouvrir le logiciel de mail : personne n'est
-     bloqué, sur ordinateur comme sur mobile.                              */
-  function initContact() {
-    const email = SITE.email || "larevuecycliste@gmail.com";
-    const modal = document.createElement("div");
-    modal.className = "contact-modal";
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
-    modal.setAttribute("aria-label", "Nous contacter");
-    modal.hidden = true;
-    modal.innerHTML = `
-      <div class="contact-modal__backdrop" data-contact-close></div>
-      <div class="contact-modal__panel">
-        <button type="button" class="contact-modal__close" data-contact-close aria-label="Fermer">&#10005;</button>
-        <div class="contact-modal__icon" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-        </div>
-        <h2>Écrivez-nous</h2>
-        <p>Une question, une idée, une envie de collaborer&#160;? Notre boîte mail est ouverte&#160;— nous répondons à chaque message.</p>
-        <div class="contact-modal__row">
-          <span class="contact-modal__addr">${escapeHTML(email)}</span>
-          <button type="button" class="contact-modal__copy" data-contact-copy>Copier</button>
-        </div>
-        <a class="btn btn--primary contact-modal__open" href="mailto:${escapeHTML(email)}">Ouvrir mon logiciel de mail</a>
-      </div>`;
-    document.body.appendChild(modal);
-
-    let lastFocus = null;
-    const open = () => {
-      lastFocus = document.activeElement;
-      modal.hidden = false;
-      document.documentElement.classList.add("search-open");
-      requestAnimationFrame(() => {
-        modal.classList.add("is-open");
-        const c = modal.querySelector("[data-contact-copy]");
-        if (c) c.focus();
-      });
-    };
-    const close = () => {
-      modal.classList.remove("is-open");
-      document.documentElement.classList.remove("search-open");
-      setTimeout(() => { modal.hidden = true; }, 250);
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    };
-
-    document.addEventListener("click", (e) => {
-      if (e.target.closest("[data-mailto]")) { e.preventDefault(); open(); return; }
-      if (e.target.closest("[data-contact-close]")) { e.preventDefault(); close(); return; }
-      const copyBtn = e.target.closest("[data-contact-copy]");
-      if (copyBtn) {
-        const label = copyBtn.textContent;
-        const flash = () => {
-          copyBtn.classList.add("is-copied");
-          copyBtn.textContent = "Copié !";
-          setTimeout(() => { copyBtn.classList.remove("is-copied"); copyBtn.textContent = label; }, 1800);
-        };
-        const fallback = () => {
-          const ta = document.createElement("textarea");
-          ta.value = email; ta.style.position = "fixed"; ta.style.opacity = "0";
-          document.body.appendChild(ta); ta.focus(); ta.select();
-          try { document.execCommand("copy"); flash(); } catch (err) {}
-          document.body.removeChild(ta);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(email).then(flash).catch(fallback);
-        } else { fallback(); }
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) { e.preventDefault(); close(); }
-    });
-  }
-
   /* ---- Boot ----------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     initChrome();
     initTheme();
     initSearch();
-    initContact();
     initReadingAids();
     renderHome();
     renderNews();
