@@ -171,7 +171,7 @@
       const latest = $("#js-latest");
       if (latest) latest.innerHTML = comingSoonHTML(
         "Les premiers articles arrivent bientôt",
-        "La Revue Cycliste se prépare. Reviens très vite pour lire les premières analyses et décryptages du peloton."
+        "Le site vient tout juste de démarrer. Les premiers articles arrivent bientôt — repassez vite."
       );
       const more = $("#js-latest-more");
       if (more) more.style.display = "none";
@@ -215,7 +215,7 @@
       if (filterBox) filterBox.style.display = "none";
       grid.innerHTML = comingSoonHTML(
         "Les premiers articles arrivent bientôt",
-        "Aucun article n'est encore publié. Reviens vite : les analyses, décryptages et récits cyclistes arrivent."
+        "Aucun article pour le moment. Les premiers arrivent bientôt."
       );
       return;
     }
