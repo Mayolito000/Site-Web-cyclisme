@@ -356,6 +356,14 @@ ul { list-style: none; padding: 0; }
 }
 .prose ul.bullets { margin-left: 1.1rem; list-style: disc; color: var(--ink-soft); }
 .prose ul.bullets li { margin-top: .5rem; }
+/* À propos & pages légales : le texte s'aligne à gauche, comme le titre
+   (la page article, elle, reste centrée). */
+body[data-page="about"] .prose,
+body[data-page="legal"] .prose { margin-inline: 0; }
+/* Photo d'ambiance sur la page À propos */
+.about-media { margin-top: 1.6rem; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+.about-media img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+@media (min-width: 700px) { .about-media img { aspect-ratio: 5 / 2; } }
 
 .article-foot { max-width: 68ch; margin: clamp(2rem,5vw,3rem) auto 0; padding-top: 1.6rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; }
 .tags { display: flex; gap: .5rem; flex-wrap: wrap; }
