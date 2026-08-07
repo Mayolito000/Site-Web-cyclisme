@@ -149,7 +149,7 @@
 
   function featurePlaceholderHTML() {
     const svg = thumbSVG({ id: "soon-hero", category: "À venir", tone: "ink" });
-    return `<div class="thumb">${svg}</div>
+    return `<div class="thumb">${svg}<img class="thumb-img" src="assets/img/une-peloton.jpg" alt="Peloton en course sur une avenue bordée de palmiers" loading="lazy" decoding="async" onerror="this.style.display='none'"></div>
       <div class="feature__body">
         <span class="chip chip--gold">À venir</span>
         <h3>La une arrive bientôt</h3>
