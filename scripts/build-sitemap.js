@@ -52,7 +52,7 @@ function build(articles) {
   const entries = [
     urlEntry(SITE_URL, { lastmod: newest, changefreq: "weekly", priority: "1.0" }),
     urlEntry(SITE_URL + "actualites.html", { lastmod: newest, changefreq: "weekly", priority: "0.8" }),
-    urlEntry(SITE_URL + "a-propos.html", { lastmod: newest, changefreq: "monthly", priority: "0.6" }),
+    urlEntry(SITE_URL + "a-propos.html", { changefreq: "yearly", priority: "0.6" }),
     urlEntry(SITE_URL + "liens.html", { changefreq: "yearly", priority: "0.4" }),
   ];
   for (const a of sorted) {
