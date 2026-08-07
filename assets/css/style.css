@@ -221,11 +221,35 @@ ul { list-style: none; padding: 0; }
   .hero__feature { min-height: 0; }
 }
 
-/* Hero en colonne unique : intro → la une → bouton */
+/* Hero en colonne unique : bandeau d'intro → « La une » → carte */
 .hero__solo { max-width: 600px; margin-inline: auto; }
-.hero__solo .hero__sub { margin-top: 0; max-width: none; }
-.hero__solo .hero__feature { margin-top: 1.8rem; }
-.hero__solo .hero__actions { margin-top: 1.8rem; }
+
+/* Bandeau d'introduction (éditorial, marine + crème) */
+.intro-banner {
+  position: relative; overflow: hidden;
+  background: var(--ink-invert); color: var(--cream);
+  border-radius: var(--radius); box-shadow: var(--shadow-md);
+  padding: clamp(1.5rem, 4.5vw, 2.3rem) clamp(1.5rem, 4.5vw, 2.5rem);
+}
+/* Filigrane de roue, discret, en haut à droite */
+.intro-banner::after {
+  content: ""; position: absolute; top: -34px; right: -34px; width: 150px; height: 150px;
+  border-radius: 50%; border: 2px solid rgba(243,237,225,.10);
+  box-shadow: inset 0 0 0 10px rgba(243,237,225,.05);
+  pointer-events: none;
+}
+.intro-banner p {
+  position: relative;
+  font-family: var(--serif); font-weight: 470;
+  font-size: clamp(1.18rem, 2.4vw, 1.48rem); line-height: 1.42; letter-spacing: -.01em;
+}
+
+/* Titre de section « La une » */
+.una-title {
+  font-family: var(--serif); font-weight: 560; letter-spacing: -.015em;
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  margin: 2.3rem 0 1rem;
+}
 
 /* ---- Category chips --------------------------------------------------- */
 .chip {
