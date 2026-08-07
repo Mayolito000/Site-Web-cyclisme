@@ -356,6 +356,10 @@ ul { list-style: none; padding: 0; }
 }
 .contact-cta h2 { font-family: var(--serif); font-weight: 540; font-size: clamp(1.8rem,5vw,2.8rem); letter-spacing: -.02em; }
 .contact-cta p { color: #aeb7c6; margin: .8rem auto 1.6rem; max-width: 46ch; }
+.contact-list { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem 1.9rem; margin-top: 1.7rem; }
+.contact-list a { display: inline-flex; align-items: center; gap: .5rem; color: var(--cream); font-weight: 500; font-size: 1rem; transition: color var(--step-fast); }
+.contact-list a:hover { color: var(--accent-soft); }
+.contact-list svg { flex: none; }
 
 /* ---- Footer ----------------------------------------------------------- */
 .site-footer { border-top: 1px solid var(--line); background: var(--surface); margin-top: 2rem; }

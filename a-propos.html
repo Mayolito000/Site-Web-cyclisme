@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>(function(){try{var t=localStorage.getItem("lrc-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();</script>
   <title>À propos — La Revue Cycliste</title>
-  <meta name="description" content="La Revue Cycliste : notre approche du cyclisme et nos engagements. Un site sur le vélo, écrit par passion." />
+  <meta name="description" content="La Revue Cycliste : qui nous sommes, notre approche du cyclisme et une sélection d'articles." />
   <meta name="theme-color" content="#16273f" />
   <link rel="canonical" href="https://larevuecycliste.fr/a-propos.html" />
   <link rel="stylesheet" href="assets/css/fonts.css" />
@@ -16,7 +16,7 @@
   <link rel="manifest" href="site.webmanifest" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="À propos — La Revue Cycliste" />
-  <meta property="og:description" content="Notre ligne éditoriale, notre approche du cyclisme et nos engagements." />
+  <meta property="og:description" content="Qui nous sommes, notre ligne éditoriale et une sélection d'articles." />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:url" content="https://larevuecycliste.fr/a-propos.html" />
   <meta property="og:site_name" content="La Revue Cycliste" />
@@ -38,7 +38,7 @@
       <div class="nav__links" id="menu">
         <a data-nav="home" href="index.html">Accueil</a>
         <a data-nav="news" href="actualites.html">Actualités</a>
-        <a data-nav="portfolio" href="portfolio.html">Portfolio</a>
+        <a data-nav="about" href="a-propos.html">À propos</a>
         <a class="btn btn--primary nav__cta" data-mailto href="#">Nous contacter</a>
       </div>
     </nav>
@@ -46,13 +46,12 @@
 
   <main id="main">
     <section class="section--tight wrap" style="padding-top:clamp(2rem,5vw,3.4rem)">
-      <p class="breadcrumb"><a href="index.html">Accueil</a> / À propos</p>
       <span class="eyebrow">La revue</span>
       <h1 class="hero__title" style="font-size:clamp(2.1rem,5.6vw,3.4rem);margin-top:.3rem">À propos de La Revue Cycliste</h1>
       <p class="hero__sub" style="max-width:56ch">Un site sur le cyclisme, écrit par passion du vélo.</p>
     </section>
 
-    <div class="wrap" style="padding-bottom:clamp(3rem,7vw,5rem)">
+    <div class="wrap" style="padding-bottom:clamp(2rem,5vw,3rem)">
       <div class="prose">
         <h2>Qui sommes-nous&nbsp;?</h2>
         <p>La Revue Cycliste, c'est un petit site sur le vélo, tenu par quelques passionnés. Nous écrivons surtout sur les courses, en essayant de rester clairs et de dire les choses honnêtement.</p>
@@ -63,11 +62,43 @@
 
         <h2>Comment nous travaillons</h2>
         <p>Nous écrivons ce que nous pensons, sans complaisance envers les marques ou les équipes. Quand nous ne sommes pas sûrs, nous le disons, et s'il y a une erreur, nous la corrigeons. Pas de pub qui clignote, pas de données revendues.</p>
-
-        <h2>Écrivons-nous</h2>
-        <p>Une remarque, une idée d'article, ou juste envie de parler vélo&nbsp;? Écrivez-nous à <a data-mailto href="#">larevuecycliste@gmail.com</a>. Vous nous trouverez aussi sur <a href="https://www.instagram.com/larevuecycliste" target="_blank" rel="noopener">Instagram</a> et <a href="https://x.com/Larevuecycliste" target="_blank" rel="noopener">X</a>.</p>
       </div>
     </div>
+
+    <!-- Sélection d'articles -->
+    <section class="section wrap" style="padding-top:0">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Sélection</span>
+          <h2>Articles à retenir</h2>
+        </div>
+        <a class="link-more" href="actualites.html" id="js-portfolio-more">Tous nos articles →</a>
+      </div>
+      <div class="grid" id="js-portfolio-grid"></div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section wrap" id="contact">
+      <div class="contact-cta reveal">
+        <span class="eyebrow" style="color:var(--accent-soft)">Contact</span>
+        <h2>Écrivez-nous</h2>
+        <p>Une remarque, une idée d'article, ou juste envie de parler vélo&nbsp;? Voici où nous joindre.</p>
+        <ul class="contact-list">
+          <li><a data-mailto href="#">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span data-site-email>e-mail</span>
+          </a></li>
+          <li><a href="https://www.instagram.com/larevuecycliste" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a></li>
+          <li><a href="https://x.com/Larevuecycliste" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X (Twitter)
+          </a></li>
+        </ul>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -86,13 +117,11 @@
         <h5>Explorer</h5>
         <a href="index.html">Accueil</a>
         <a href="actualites.html">Actualités</a>
-        <a href="portfolio.html">Portfolio</a>
         <a href="a-propos.html">À propos</a>
       </nav>
       <div>
         <h5>Contact</h5>
-        <a data-site-email href="#">e-mail</a>
-        <a data-mailto href="#">Collaborations</a>
+        <a href="a-propos.html#contact">Nous écrire</a>
       </div>
     </div>
     <div class="wrap footer__bottom">
