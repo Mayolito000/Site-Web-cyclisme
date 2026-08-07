@@ -221,6 +221,12 @@ ul { list-style: none; padding: 0; }
   .hero__feature { min-height: 0; }
 }
 
+/* Hero en colonne unique : intro → la une → bouton */
+.hero__solo { max-width: 600px; margin-inline: auto; }
+.hero__solo .hero__sub { margin-top: 0; max-width: none; }
+.hero__solo .hero__feature { margin-top: 1.8rem; }
+.hero__solo .hero__actions { margin-top: 1.8rem; }
+
 /* ---- Category chips --------------------------------------------------- */
 .chip {
   display: inline-block; font-family: var(--mono); font-size: .66rem; font-weight: 700;
