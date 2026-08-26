@@ -340,10 +340,14 @@ ul { list-style: none; padding: 0; }
 .breadcrumb a:hover { color: var(--accent); }
 .article-title { font-family: var(--serif); font-weight: 540; font-size: clamp(2rem,5.4vw,3.4rem); line-height: 1.03; letter-spacing: -.025em; max-width: 20ch; }
 .article-standfirst { font-size: 1.2rem; color: var(--ink-soft); max-width: 60ch; margin-top: 1.1rem; }
+.article-lead { max-width: 68ch; margin-inline: auto; font-size: 1.24rem; line-height: 1.65; color: var(--ink); }
 .article-byline { display: flex; align-items: center; gap: .7rem; margin-top: 1.4rem; }
 .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--ink-invert); color: var(--accent-soft); display: grid; place-items: center; font-family: var(--serif); font-weight: 600; }
-.article-cover { margin: clamp(1.6rem,4vw,2.4rem) 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
-.article-cover .thumb { aspect-ratio: 21/9; }
+.article-cover { margin: clamp(1.6rem,4vw,2.4rem) auto; max-width: 640px; }
+.article-cover__img { display: block; width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); background: var(--line-soft); }
+.article-cover__frame { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.article-cover .thumb { aspect-ratio: 16/9; }
+.cover-credit { margin-top: .55rem; font-family: var(--sans); font-size: .8rem; color: var(--muted); text-align: right; }
 
 .prose { max-width: 68ch; margin-inline: auto; font-size: 1.12rem; color: var(--ink-soft); }
 .prose > * + * { margin-top: 1.3rem; }
@@ -356,6 +360,34 @@ ul { list-style: none; padding: 0; }
 }
 .prose ul.bullets { margin-left: 1.1rem; list-style: disc; color: var(--ink-soft); }
 .prose ul.bullets li { margin-top: .5rem; }
+
+/* ---- Blocs enrichis d'article : citation attribuée, exergue, photo --- */
+.prose blockquote cite {
+  display: block; margin-top: .9rem; font-family: var(--sans); font-style: normal;
+  font-weight: 600; font-size: .92rem; line-height: 1.4; color: var(--muted);
+}
+.prose blockquote cite::before { content: "— "; }
+
+.prose .pullquote { margin-block: 2.6rem; }
+.prose .pullquote p {
+  font-family: var(--serif); font-weight: 540; font-size: clamp(1.55rem, 4.2vw, 2.05rem);
+  line-height: 1.2; letter-spacing: -.015em; color: var(--ink);
+  border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+  padding-block: 1.3rem;
+}
+
+.prose figure.article-figure { margin-block: 2.4rem; }
+.prose .article-figure img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--radius); border: 1px solid var(--line); background: var(--line-soft);
+}
+.prose .article-figure figcaption {
+  margin-top: .65rem; font-family: var(--sans); font-size: .82rem; line-height: 1.55;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .12rem .5rem;
+}
+.prose .figure-caption { color: var(--ink-soft); }
+.prose .figure-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.prose .figure-credit a:hover { color: var(--accent); }
 /* À propos & pages légales : le texte s'aligne à gauche, comme le titre
    (la page article, elle, reste centrée). */
 body[data-page="about"] .prose,

@@ -95,6 +95,32 @@
     return svg;
   }
 
+  /* ---- Photo dans le corps d'un article ------------------------------
+     Image + légende + crédit (auteur / licence cliquables). Pour les
+     photos sous licence Creative Commons, le crédit est obligatoire : il
+     s'affiche en petit sous l'image. Si la photo ne charge pas (fichier
+     manquant), la figure entière se masque — jamais de visuel cassé.      */
+  function creditHTML(blk) {
+    if (!blk.credit && !blk.license) return "";
+    const link = (txt, url) => url
+      ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener">${escapeHTML(txt)}</a>`
+      : escapeHTML(txt);
+    const parts = [];
+    if (blk.credit) parts.push("Photo : " + link(blk.credit, blk.creditUrl));
+    if (blk.license) parts.push(link(blk.license, blk.licenseUrl));
+    return `<span class="figure-credit">${parts.join(" · ")}</span>`;
+  }
+
+  function figureHTML(blk) {
+    const cap = blk.caption ? `<span class="figure-caption">${escapeHTML(blk.caption)}</span>` : "";
+    const cred = creditHTML(blk);
+    const figcap = (cap || cred) ? `<figcaption>${cap}${cred}</figcaption>` : "";
+    return `<figure class="article-figure">` +
+      `<img src="${escapeHTML(blk.src)}" alt="${escapeHTML(blk.alt || "")}" loading="lazy" decoding="async"` +
+      ` onerror="var f=this.closest('figure'); if(f) f.style.display='none'">` +
+      `${figcap}</figure>`;
+  }
+
   /* ---- Fabriques de fragments ---------------------------------------- */
   function metaHTML(a) {
     const chip = a.category
@@ -326,10 +352,14 @@
     }
     bcEl.textContent = JSON.stringify(crumbs);
 
-    // Corps + collecte des titres pour le sommaire (avec ancres)
+    // Corps : le 1er paragraphe fait office de chapô (placé au-dessus de la
+    // photo) ; le reste s'affiche sous la photo. Collecte des titres au passage.
     const headings = [];
     const usedIds = {};
-    const bodyHTML = (a.body || []).map((blk) => {
+    const allBlocks = a.body || [];
+    const hasLead = allBlocks[0] && allBlocks[0].t === "p";
+    const leadHTML = hasLead ? `<p class="article-lead">${escapeHTML(allBlocks[0].x)}</p>` : "";
+    const bodyHTML = (hasLead ? allBlocks.slice(1) : allBlocks).map((blk) => {
       switch (blk.t) {
         case "h2": {
           let id = slugify(blk.x) || "section";
@@ -338,7 +368,9 @@
           headings.push({ id, text: blk.x });
           return `<h2 id="${id}">${escapeHTML(blk.x)}</h2>`;
         }
-        case "quote": return `<blockquote>${escapeHTML(blk.x)}</blockquote>`;
+        case "quote": return `<blockquote>${escapeHTML(blk.x)}${blk.by ? `<cite>${escapeHTML(blk.by)}</cite>` : ""}</blockquote>`;
+        case "pull":  return `<aside class="pullquote"><p>${escapeHTML(blk.q)}</p></aside>`;
+        case "image": return figureHTML(blk);
         case "list":  return `<ul class="bullets">${(blk.x || []).map((li) => `<li>${escapeHTML(li)}</li>`).join("")}</ul>`;
         default:      return `<p>${escapeHTML(blk.x)}</p>`;
       }
@@ -359,7 +391,6 @@
         <p class="breadcrumb"><a href="index.html">Accueil</a> / <a href="actualites.html">Actualités</a>${a.category ? " / " + escapeHTML(a.category) : ""}</p>
         ${a.category ? `<span class="chip">${escapeHTML(a.category)}</span>` : ""}
         <h1 class="article-title">${escapeHTML(a.title)}</h1>
-        <p class="article-standfirst">${escapeHTML(a.excerpt)}</p>
         <div class="article-byline">
           <span class="avatar">${initial}</span>
           <span class="meta">
@@ -370,8 +401,15 @@
         </div>
         ${listenHTML()}
       </div>
-      <div class="wrap article-cover"><div class="thumb">${mediaHTML(a)}</div></div>
-      ${tocHTML}
+      ${leadHTML ? `<div class="wrap">${leadHTML}</div>` : ""}
+      <div class="wrap">
+        <figure class="article-cover">
+          ${a.image
+            ? `<img class="article-cover__img" src="${escapeHTML(a.image)}" alt="${escapeHTML(a.imageAlt || a.title)}" decoding="async">`
+            : `<div class="article-cover__frame"><div class="thumb">${mediaHTML(a)}</div></div>`}
+          ${a.imageCredit ? `<figcaption class="cover-credit">${escapeHTML(a.imageCredit)}</figcaption>` : ""}
+        </figure>
+      </div>
       <div class="wrap"><div class="prose">${bodyHTML}</div></div>
       <div class="wrap">${shareHTML(a, artUrl)}</div>
       <div class="wrap">
