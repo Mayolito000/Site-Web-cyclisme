@@ -7,7 +7,15 @@
     <atom:link href="https://larevuecycliste.fr/feed.xml" rel="self" type="application/rss+xml" />
     <description>Un site sur le cyclisme, écrit par passion du vélo.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Mon, 04 Aug 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2026 08:00:00 GMT</lastBuildDate>
     <generator>build-feed.js (La Revue Cycliste)</generator>
+    <item>
+      <title>Pogačar, tue-l’amour du cyclisme ?</title>
+      <link>https://larevuecycliste.fr/article.html?id=pogacar-tue-lamour-du-cyclisme</link>
+      <guid isPermaLink="true">https://larevuecycliste.fr/article.html?id=pogacar-tue-lamour-du-cyclisme</guid>
+      <pubDate>Wed, 26 Aug 2026 08:00:00 GMT</pubDate>
+      <dc:creator>La rédaction</dc:creator>
+      <description>Cinq Tours de France et une domination presque sans faille. La suprématie de Tadej Pogačar est-elle en train d’user le cyclisme, ou son public en redemande-t-il malgré tout ?</description>
+    </item>
   </channel>
 </rss>
