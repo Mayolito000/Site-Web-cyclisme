@@ -314,7 +314,7 @@
 
     const ld = {
       "@context": "https://schema.org",
-      "@type": "BlogPosting",
+      "@type": "NewsArticle",
       headline: a.title,
       description: a.excerpt,
       datePublished: a.date,
