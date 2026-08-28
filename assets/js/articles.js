@@ -80,6 +80,7 @@ const ARTICLES = [
     portfolio: true,
     tone: "ink",
     image: "assets/img/pogacar-une.jpg",
+    shareImage: "assets/img/pogacar-partage.jpg",
     imageAlt: "Tadej Pogačar en maillot arc-en-ciel de champion du monde",
     imageCredit: "Photo : Tugay Yurdasucu · Pexels",
     body: [

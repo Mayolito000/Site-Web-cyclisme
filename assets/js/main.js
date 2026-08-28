@@ -297,7 +297,10 @@
     // SEO dynamique : canonical, Open Graph et données structurées de l'article
     const base = "https://larevuecycliste.fr/";
     const artUrl = base + "article.html?id=" + encodeURIComponent(a.id);
-    const img = (a.image && /^https?:/.test(a.image)) ? a.image : base + "assets/img/og-image.png";
+    // Image de partage (Open Graph, Twitter, Discover) : on privilégie une
+    // vignette paysage dédiée (shareImage), sinon l'image de marque par défaut.
+    const absUrl = (p) => p ? (/^https?:/.test(p) ? p : base + p) : null;
+    const img = absUrl(a.shareImage) || (base + "assets/img/og-image.png");
     const setMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
     // Canonique : créé s'il n'existe pas, pour toujours pointer vers l'article.
     let canon = document.querySelector('link[rel="canonical"]');
@@ -311,7 +314,9 @@
     setMeta('meta[name="twitter:title"]', "content", a.title);
     setMeta('meta[name="twitter:description"]', "content", a.excerpt);
     setMeta('meta[name="twitter:image"]', "content", img);
+    setMeta('meta[property="og:image:alt"]', "content", a.imageAlt || a.title);
 
+    const SOCIAL = ["https://www.instagram.com/larevuecycliste", "https://x.com/Larevuecycliste"];
     const ld = {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
@@ -321,9 +326,9 @@
       dateModified: a.date,
       inLanguage: "fr-FR",
       image: img,
-      author: { "@type": "Organization", name: SITE.name, url: base },
+      author: { "@type": "Organization", name: SITE.name, url: base, sameAs: SOCIAL },
       publisher: {
-        "@type": "Organization", name: SITE.name, url: base,
+        "@type": "Organization", name: SITE.name, url: base, sameAs: SOCIAL,
         logo: { "@type": "ImageObject", url: base + "assets/img/og-image.png" },
       },
       mainEntityOfPage: { "@type": "WebPage", "@id": artUrl },
