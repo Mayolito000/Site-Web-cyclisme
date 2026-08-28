@@ -326,7 +326,7 @@
       dateModified: a.date,
       inLanguage: "fr-FR",
       image: img,
-      author: { "@type": "Organization", name: SITE.name, url: base, sameAs: SOCIAL },
+      author: { "@type": "Person", name: a.author, url: base + "a-propos.html" },
       publisher: {
         "@type": "Organization", name: SITE.name, url: base, sameAs: SOCIAL,
         logo: { "@type": "ImageObject", url: base + "assets/img/og-image.png" },
