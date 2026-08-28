@@ -394,6 +394,7 @@ body[data-page="about"] .prose,
 body[data-page="legal"] .prose { margin-inline: 0; }
 /* Photo d'ambiance sur la page À propos */
 .about-media { margin-top: 1.6rem; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+.about-signature { margin-top: 1.8rem; font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.35rem; color: var(--ink); }
 .about-media img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
 @media (min-width: 700px) { .about-media img { aspect-ratio: 5 / 2; } }
 
