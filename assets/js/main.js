@@ -299,7 +299,10 @@
     const artUrl = base + "article.html?id=" + encodeURIComponent(a.id);
     const img = (a.image && /^https?:/.test(a.image)) ? a.image : base + "assets/img/og-image.png";
     const setMeta = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
-    setMeta('link[rel="canonical"]', "href", artUrl);
+    // Canonique : créé s'il n'existe pas, pour toujours pointer vers l'article.
+    let canon = document.querySelector('link[rel="canonical"]');
+    if (!canon) { canon = document.createElement("link"); canon.rel = "canonical"; document.head.appendChild(canon); }
+    canon.setAttribute("href", artUrl);
     setMeta('meta[property="og:type"]', "content", "article");
     setMeta('meta[property="og:title"]', "content", a.title);
     setMeta('meta[property="og:description"]', "content", a.excerpt);
